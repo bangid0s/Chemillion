@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets and local state
+.env
+.env.local
+data/
+media/
+private/
+
+*.log
+.DS_Store
