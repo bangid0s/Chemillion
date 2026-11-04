@@ -5,6 +5,7 @@
 import path from 'path'
 import { getPayload } from 'payload'
 import config from '../src/payload.config'
+import { ADDRESS, MAP_EMBED_URL } from '../src/migrations/20261104_090000_company_address'
 
 const LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 const LOREM_SHORT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
@@ -354,7 +355,8 @@ const seed = async () => {
     slug: 'site-settings',
     data: {
       companyName: 'Chemillion',
-      address: '123 Industrial Road\nJakarta, Indonesia',
+      address: ADDRESS,
+      mapEmbedUrl: MAP_EMBED_URL,
       phone: '+62 21 1234 5678',
       email: 'info@chemillion.com',
       officeHours: 'Monday to Friday, 08:00 to 17:00',

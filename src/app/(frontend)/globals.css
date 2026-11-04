@@ -31,7 +31,11 @@ html {
 }
 @media (min-width: 1024px) {
   html {
-    font-size: clamp(16px, 1.5625vw, 40px);
+    /*
+     * The 1024 px mockup is laid out on a 1280 px canvas, so desktops get generous side margins. Above 1600 px the
+     * content stops growing and the margins widen instead, so large screens never feel crammed edge to edge.
+     */
+    font-size: clamp(16px, calc(100vw / 1280 * 16), 20px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -451,8 +455,6 @@ a:hover .round-arrow {
  */
 .hero {
   display: grid;
-  max-width: calc(1024 * var(--u));
-  margin-inline: auto;
 }
 .hero > * {
   grid-area: 1 / 1;
@@ -687,8 +689,6 @@ a:hover .round-arrow {
 /* Why Chemillion */
 .why {
   display: grid;
-  max-width: calc(1024 * var(--u));
-  margin-inline: auto;
 }
 .why > * {
   grid-area: 1 / 1;
@@ -3707,5 +3707,231 @@ body {
   .product__ids dt {
     min-width: 0;
     flex: 0 0 96px;
+  }
+}
+
+/*
+ * Desktop reading sizes. The layout now sits on a wider canvas, so running text is nudged up a little to stay at a
+ * comfortable 15-17 px on laptops while the headings keep their designed size.
+ */
+@media (min-width: 1024px) {
+  body {
+    font-size: calc(14 * var(--u));
+  }
+  .hero__text {
+    width: calc(400 * var(--u));
+    font-size: calc(14.5 * var(--u));
+    line-height: 1.6;
+  }
+  .prop p {
+    width: calc(196 * var(--u));
+    font-size: calc(12 * var(--u));
+    line-height: 1.55;
+  }
+  .cats__intro,
+  .cta__text {
+    font-size: calc(11.8 * var(--u));
+    line-height: 1.6;
+  }
+  .why__text {
+    font-size: calc(13.2 * var(--u));
+    line-height: 1.6;
+  }
+  .lead,
+  .page-hero__intro,
+  .product__short {
+    font-size: calc(14.2 * var(--u));
+  }
+  .prose {
+    font-size: calc(13.8 * var(--u));
+  }
+  .card p,
+  .product-card__text,
+  .news-card__text {
+    font-size: calc(12.2 * var(--u));
+  }
+  .footer__col,
+  .footer__col h2 {
+    font-size: calc(11.2 * var(--u));
+  }
+  .field label,
+  .field__label,
+  .consent {
+    font-size: calc(11.8 * var(--u));
+  }
+  .field input,
+  .field select,
+  .field textarea,
+  .multi summary {
+    font-size: calc(12.8 * var(--u));
+  }
+}
+
+/*
+ * Homepage comfort. Calmer type sizes and generous gaps between sections, so a visitor sees one idea at a time
+ * instead of a full screen of content.
+ */
+@media (min-width: 1024px) {
+  .title {
+    font-size: calc(31 * var(--u));
+    line-height: 1.05;
+  }
+  .hero__visual {
+    width: calc(50% + 80 * var(--u));
+  }
+  .hero__copy {
+    padding-top: calc(86 * var(--u));
+  }
+  .hero__title {
+    font-size: calc(48 * var(--u));
+    line-height: 1.02;
+  }
+  .hero__text {
+    width: calc(380 * var(--u));
+    margin-top: calc(24 * var(--u));
+  }
+  .hero__buttons {
+    margin-top: calc(34 * var(--u));
+  }
+  .props {
+    padding: calc(52 * var(--u)) 0 calc(72 * var(--u));
+  }
+  .props .icon-circle {
+    width: calc(52 * var(--u));
+    height: calc(52 * var(--u));
+  }
+  .props .icon-circle svg {
+    width: calc(26 * var(--u));
+    height: calc(26 * var(--u));
+  }
+  .prop h2 {
+    font-size: calc(13 * var(--u));
+  }
+  .cats {
+    padding-bottom: calc(96 * var(--u));
+  }
+  .cats__inner {
+    padding-top: calc(88 * var(--u));
+  }
+  .cats__head {
+    margin-bottom: calc(40 * var(--u));
+  }
+  .why {
+    margin-top: calc(100 * var(--u));
+  }
+  .why__stats {
+    margin-top: calc(40 * var(--u));
+  }
+  .stats__item dd {
+    font-size: calc(26 * var(--u));
+  }
+  .cta {
+    margin-top: calc(110 * var(--u));
+  }
+  .cta__head h2 {
+    font-size: calc(21 * var(--u));
+  }
+  .partners-strip,
+  .section--grey:has(.news-card) {
+    padding-block: calc(88 * var(--u));
+  }
+  .page-hero__title {
+    font-size: calc(38 * var(--u));
+  }
+}
+
+/* Phones and tablets: calmer headline sizes, wider gutters and taller gaps between home sections. */
+@media (max-width: 1023px) {
+  .hero__title {
+    font-size: clamp(36px, 10.4vw, 56px);
+    line-height: 1.04;
+  }
+  .title {
+    font-size: 30px;
+  }
+  .page-hero__title {
+    font-size: 34px;
+  }
+  .hero__copy {
+    padding-top: 40px;
+    padding-bottom: 44px;
+  }
+  .props__inner {
+    padding-top: 56px;
+    padding-bottom: 60px;
+    gap: 32px;
+  }
+  .cats__inner {
+    padding-top: 64px;
+  }
+  .cats {
+    padding-bottom: 64px;
+  }
+  .why__copy {
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
+  .cta__band {
+    padding-top: 48px;
+    padding-bottom: 56px;
+  }
+  .cta__head h2 {
+    font-size: 24px;
+  }
+  .stats__item dd {
+    font-size: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .title {
+    font-size: 27px;
+  }
+  .page-hero__title {
+    font-size: 30px;
+  }
+}
+@media (min-width: 390px) and (max-width: 767px) {
+  .header__inner,
+  .container,
+  .cats__inner,
+  .hero__copy,
+  .why__copy,
+  .props__inner {
+    padding-inline: 24px;
+  }
+  .cta__band {
+    padding-inline: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .nav-links a {
+    font-size: calc(12.2 * var(--u));
+  }
+  .header__cta {
+    font-size: calc(11 * var(--u));
+  }
+  .eyebrow {
+    font-size: calc(9.6 * var(--u));
+  }
+  .cat-card__name {
+    font-size: calc(11.4 * var(--u));
+  }
+  .link-arrow {
+    font-size: calc(11.6 * var(--u));
+  }
+  .stats__item dt {
+    font-size: calc(12.2 * var(--u));
+  }
+  /* Room for a three-line registered address before the social column. */
+  .footer__col--social {
+    left: calc(862 * var(--u));
+  }
+  .footer__copy {
+    top: calc(56 * var(--u));
+    right: auto;
+    left: 0;
+    font-size: calc(9.6 * var(--u));
+    line-height: 1.5;
+    white-space: normal;
   }
 }
