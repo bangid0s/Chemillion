@@ -26,7 +26,8 @@ import { richText } from './fields/richText'
 import { siteUrl } from './lib/url'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-const databaseUri = process.env.DATABASE_URI || 'file:./data/chemillion.db'
+// DATABASE_URL is what Vercel's Neon integration sets.
+const databaseUri = process.env.DATABASE_URI || process.env.DATABASE_URL || 'file:./data/chemillion.db'
 
 // SQLite won't create its own folder on a fresh checkout.
 if (databaseUri.startsWith('file:')) fs.mkdirSync(path.dirname(path.resolve(databaseUri.slice('file:'.length))), { recursive: true })

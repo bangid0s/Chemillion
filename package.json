@@ -12,7 +12,7 @@
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
     "typecheck": "tsc --noEmit",
-    "vercel-build": "payload migrate && next build --webpack"
+    "vercel-build": "payload migrate && npm run seed && next build --webpack"
   },
   "engines": {
     "node": ">=22.23.4"

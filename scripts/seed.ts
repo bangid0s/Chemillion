@@ -47,6 +47,8 @@ const rich = (...blocks: string[]) => ({
 const seed = async () => {
   const email = process.env.SEED_ADMIN_EMAIL
   const password = process.env.SEED_ADMIN_PASSWORD
+  // Vercel runs this on every build; without a seed login there it just moves on.
+  if ((!email || !password) && process.env.VERCEL) return console.log('No SEED_ADMIN_* set, so nothing was seeded.')
   if (!email || !password) throw new Error('Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD in .env first.')
 
   const payload = await getPayload({ config })
