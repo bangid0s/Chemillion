@@ -31,7 +31,11 @@ html {
 }
 @media (min-width: 1024px) {
   html {
-    font-size: clamp(16px, 1.5625vw, 40px);
+    /*
+     * The 1024 px mockup is laid out on an 1180 px canvas, so desktops get real side margins. Above 1550 px the
+     * content stops growing and the margins widen instead, so large screens never feel crammed edge to edge.
+     */
+    font-size: clamp(16px, calc(100vw / 1180 * 16), 21px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -451,8 +455,6 @@ a:hover .round-arrow {
  */
 .hero {
   display: grid;
-  max-width: calc(1024 * var(--u));
-  margin-inline: auto;
 }
 .hero > * {
   grid-area: 1 / 1;
@@ -687,8 +689,6 @@ a:hover .round-arrow {
 /* Why Chemillion */
 .why {
   display: grid;
-  max-width: calc(1024 * var(--u));
-  margin-inline: auto;
 }
 .why > * {
   grid-area: 1 / 1;
@@ -3707,5 +3707,62 @@ body {
   .product__ids dt {
     min-width: 0;
     flex: 0 0 96px;
+  }
+}
+
+/*
+ * Desktop reading sizes. The layout now sits on a wider canvas, so running text is nudged up a little to stay at a
+ * comfortable 15-17 px on laptops while the headings keep their designed size.
+ */
+@media (min-width: 1024px) {
+  body {
+    font-size: calc(14 * var(--u));
+  }
+  .hero__text {
+    width: calc(400 * var(--u));
+    font-size: calc(14.5 * var(--u));
+    line-height: 1.6;
+  }
+  .prop p {
+    width: calc(196 * var(--u));
+    font-size: calc(12 * var(--u));
+    line-height: 1.55;
+  }
+  .cats__intro,
+  .cta__text {
+    font-size: calc(11.8 * var(--u));
+    line-height: 1.6;
+  }
+  .why__text {
+    font-size: calc(13.2 * var(--u));
+    line-height: 1.6;
+  }
+  .lead,
+  .page-hero__intro,
+  .product__short {
+    font-size: calc(14.2 * var(--u));
+  }
+  .prose {
+    font-size: calc(13.8 * var(--u));
+  }
+  .card p,
+  .product-card__text,
+  .news-card__text {
+    font-size: calc(12.2 * var(--u));
+  }
+  .footer__col,
+  .footer__col h2 {
+    font-size: calc(11.2 * var(--u));
+  }
+  .field label,
+  .field__label,
+  .consent {
+    font-size: calc(11.8 * var(--u));
+  }
+  .field input,
+  .field select,
+  .field textarea,
+  .multi summary {
+    font-size: calc(12.8 * var(--u));
   }
 }
