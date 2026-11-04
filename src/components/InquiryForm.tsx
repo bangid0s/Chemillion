@@ -19,11 +19,9 @@ type Props = {
 
 type Errors = Record<string, string>
 
-const MAX_FILE = 5 * 1024 * 1024
-const ALLOWED_FILES = ['application/pdf', 'image/jpeg', 'image/png']
 const f = t.form
 
-const validate = (data: FormData, selected: unknown[]): Errors => {
+const validate = (data: FormData): Errors => {
   const errors: Errors = {}
   const str = (key: string) => String(data.get(key) ?? '').trim()
   for (const key of ['name', 'company', 'phone', 'type']) if (!str(key)) errors[key] = f.required
@@ -31,11 +29,6 @@ const validate = (data: FormData, selected: unknown[]): Errors => {
   const message = str('message')
   if (message.length < 20 || message.length > 2000) errors.message = f.messageLength
   if (!data.get('consent')) errors.consent = f.consentRequired
-  const file = data.get('attachment')
-  if (file instanceof File && file.size > 0) {
-    if (!ALLOWED_FILES.includes(file.type)) errors.attachment = f.fileType
-    else if (file.size > MAX_FILE) errors.attachment = f.fileSize
-  }
   return errors
 }
 
@@ -72,7 +65,6 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
   const [serverError, setServerError] = useState('')
   const [selected, setSelected] = useState<(string | number)[]>([])
   const [origin, setOrigin] = useState('contact')
-  const [type, setType] = useState(inquiryTypes[0] ?? '')
   const [utm, setUtm] = useState<Record<string, string>>({})
   const startedAt = useRef(Date.now())
   const started = useRef(false)
@@ -83,11 +75,6 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
     const params = new URLSearchParams(window.location.search)
     const fromOrigin = params.get('origin')
     if (fromOrigin && ['contact', 'quote', 'product', 'partner'].includes(fromOrigin)) setOrigin(fromOrigin)
-    if (fromOrigin === 'partner') {
-      setType(inquiryTypes.find((o) => /partner/i.test(o)) ?? inquiryTypes[0] ?? '')
-    } else if (fromOrigin === 'quote' || fromOrigin === 'product') {
-      setType(inquiryTypes.find((o) => /quote/i.test(o)) ?? inquiryTypes[0] ?? '')
-    }
     const productSlug = params.get('product')
     const match = products.find((p) => p.slug === productSlug)
     if (match) setSelected([match.id])
@@ -96,7 +83,10 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
       medium: params.get('utm_medium') ?? '',
       campaign: params.get('utm_campaign') ?? '',
     })
-  }, [inquiryTypes, products])
+  }, [products])
+
+  // The form only takes quote requests for now, so every inquiry is filed under the quote type.
+  const type = inquiryTypes.find((o) => /quote/i.test(o)) ?? inquiryTypes[0] ?? 'Product quote'
 
   useEffect(() => {
     if (!turnstileSiteKey) return
@@ -116,7 +106,7 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
-    const found = validate(data, selected)
+    const found = validate(data)
     setErrors(found)
     setServerError('')
     if (Object.keys(found).length) {
@@ -196,21 +186,7 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
             <input id="phone" name="phone" type="tel" autoComplete="tel-national" required {...describe('phone')} />
           </div>
         </Field>
-        <Field name="country" label={f.country}>
-          <select id="country" name="country" defaultValue="Indonesia">
-            {countries.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </Field>
-        <Field name="type" label={f.inquiryType} required error={errors.type}>
-          <select id="type" name="type" value={type} onChange={(e) => setType(e.target.value)} required {...describe('type')}>
-            {inquiryTypes.map((o) => (
-              <option key={o}>{o}</option>
-            ))}
-          </select>
-        </Field>
-        <div className="field">
+        <div className="field form-grid__full">
           <span className="field__label" id="products-label">
             {f.products}
           </span>
@@ -241,18 +217,20 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
         <Field name="quantity" label={f.quantity}>
           <input id="quantity" name="quantity" type="text" placeholder={f.quantityPlaceholder} />
         </Field>
+        <Field name="country" label={f.country}>
+          <select id="country" name="country" defaultValue="Indonesia">
+            {countries.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+        </Field>
         <div className="form-grid__full">
           <Field name="message" label={f.message} required error={errors.message}>
             <textarea id="message" name="message" rows={5} maxLength={2000} required {...describe('message')} />
           </Field>
         </div>
-        <div className="form-grid__full">
-          <Field name="attachment" label={f.attachment} error={errors.attachment}>
-            <input id="attachment" name="attachment" type="file" accept=".pdf,.jpg,.jpeg,.png" {...describe('attachment')} />
-            <p className="field__hint">{f.attachmentHint}</p>
-          </Field>
-        </div>
       </div>
+      <input type="hidden" name="type" value={type} />
 
       {/* Hidden from people; bots that fill it in are rejected. */}
       <div className="hp" aria-hidden="true">

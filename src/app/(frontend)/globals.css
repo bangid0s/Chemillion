@@ -3188,3 +3188,524 @@ input[type='radio'] {
     font-size: 9pt;
   }
 }
+
+/*
+ * Breathing room. The mockup is very compact, so every section here gets more air: fixed section heights become
+ * padding, gaps between cards and fields open up, and body text gets a more relaxed line height. Shapes, colours and
+ * the order of everything stay exactly as designed.
+ */
+body {
+  line-height: 1.55;
+}
+
+/* Home: hero and value props */
+.hero__copy {
+  padding-top: calc(64 * var(--u));
+}
+.hero__text {
+  margin-top: calc(26 * var(--u));
+  line-height: calc(20.5 * var(--u));
+}
+.hero__buttons {
+  margin-top: calc(30 * var(--u));
+}
+.props {
+  height: auto;
+  padding: calc(28 * var(--u)) 0 calc(40 * var(--u));
+}
+.prop p {
+  margin-top: calc(4 * var(--u));
+  line-height: calc(16.5 * var(--u));
+}
+
+/* Home: product categories */
+.cats {
+  height: auto;
+  padding-bottom: calc(64 * var(--u));
+}
+.cats__inner {
+  padding-top: calc(56 * var(--u));
+}
+.cats__head {
+  height: auto;
+  margin-bottom: calc(30 * var(--u));
+}
+.cats__intro {
+  line-height: calc(16.5 * var(--u));
+}
+.cats__grid {
+  gap: calc(12 * var(--u));
+}
+.cat-card__label {
+  min-height: calc(50 * var(--u));
+}
+
+/* Home: why Chemillion. The text block centres on the image instead of hugging its top edge. */
+.why {
+  margin-top: calc(40 * var(--u));
+}
+.why__copy {
+  align-self: center;
+  padding-top: 0;
+}
+.why__text {
+  margin-top: calc(16 * var(--u));
+  line-height: calc(18.5 * var(--u));
+}
+.why__btn {
+  margin-top: calc(22 * var(--u));
+}
+.why__stats {
+  margin-top: calc(34 * var(--u));
+}
+
+/* Home: CTA banner and footer */
+.cta {
+  height: calc(140 * var(--u));
+  margin-top: calc(64 * var(--u));
+}
+.cta__text {
+  line-height: calc(16.5 * var(--u));
+}
+.footer {
+  border-top: 1px solid #eceef0;
+}
+.footer__inner {
+  height: calc(196 * var(--u));
+}
+.footer__logo {
+  top: calc(46 * var(--u));
+}
+.footer__col {
+  top: calc(42 * var(--u));
+  line-height: calc(18 * var(--u));
+}
+.footer__col h2 {
+  margin-bottom: calc(8 * var(--u));
+}
+.footer__copy {
+  top: calc(110 * var(--u));
+}
+
+/* Inner pages */
+.section {
+  padding: calc(72 * var(--u)) 0;
+}
+.section--tight {
+  padding: calc(44 * var(--u)) 0;
+}
+.grid {
+  gap: calc(22 * var(--u));
+  margin-top: calc(30 * var(--u));
+}
+.title + .grid,
+.subtitle + .grid {
+  margin-top: calc(26 * var(--u));
+}
+.title--sm {
+  margin-bottom: calc(28 * var(--u));
+}
+.subtitle {
+  margin: calc(34 * var(--u)) 0 calc(14 * var(--u));
+}
+.page-hero {
+  min-height: calc(290 * var(--u));
+}
+.page-hero__body {
+  padding-top: calc(30 * var(--u));
+  padding-bottom: calc(56 * var(--u));
+}
+.page-hero__intro {
+  margin-top: calc(18 * var(--u));
+  line-height: 1.55;
+}
+.crumbs {
+  margin-bottom: calc(26 * var(--u));
+}
+.split {
+  gap: calc(56 * var(--u));
+}
+.prose {
+  margin-top: calc(18 * var(--u));
+  line-height: 1.7;
+}
+.prose > * + * {
+  margin-top: calc(14 * var(--u));
+}
+.prose h2,
+.prose h3,
+.prose h4 {
+  margin-top: calc(28 * var(--u));
+}
+.card {
+  padding: calc(28 * var(--u));
+}
+.card h3 {
+  margin-top: calc(18 * var(--u));
+}
+.card p {
+  margin-top: calc(8 * var(--u));
+  line-height: 1.6;
+}
+.product-card__body,
+.news-card__body {
+  padding: calc(18 * var(--u)) calc(18 * var(--u)) calc(20 * var(--u));
+}
+.product-card__text,
+.news-card__text {
+  line-height: 1.6;
+}
+.product-card__text {
+  margin: calc(9 * var(--u)) 0 calc(14 * var(--u));
+}
+.partner-groups > * + * {
+  margin-top: calc(48 * var(--u));
+}
+.partner-grid {
+  gap: calc(18 * var(--u));
+}
+.partner-card {
+  padding: calc(22 * var(--u));
+}
+.chips {
+  margin-bottom: calc(26 * var(--u));
+}
+.pagination {
+  margin-top: calc(40 * var(--u));
+}
+.article {
+  padding: calc(30 * var(--u)) 0 calc(72 * var(--u));
+}
+.article__cover {
+  margin-top: calc(26 * var(--u));
+}
+.share {
+  margin-top: calc(36 * var(--u));
+  padding-top: calc(20 * var(--u));
+}
+
+/* Product page */
+.product-top {
+  padding-top: calc(28 * var(--u));
+}
+.product {
+  gap: calc(52 * var(--u));
+}
+.product__ids {
+  gap: calc(8 * var(--u));
+  margin-top: calc(20 * var(--u));
+}
+.product__short {
+  margin-top: calc(20 * var(--u));
+  line-height: 1.6;
+}
+.product__quote {
+  margin-top: calc(26 * var(--u));
+}
+.product-detail {
+  gap: calc(56 * var(--u));
+}
+.product-side .subtitle + .tags,
+.product-side .subtitle + .docs {
+  margin-bottom: calc(8 * var(--u));
+}
+.spec-table th,
+.spec-table td {
+  padding: calc(11 * var(--u)) calc(14 * var(--u));
+}
+
+/* Contact page and form */
+.contact {
+  gap: calc(48 * var(--u));
+}
+.contact__form {
+  padding: calc(36 * var(--u));
+}
+.contact__list {
+  gap: calc(20 * var(--u));
+  margin-top: calc(26 * var(--u));
+}
+.inquiry-form {
+  margin-top: calc(26 * var(--u));
+}
+.form-grid {
+  gap: calc(18 * var(--u)) calc(18 * var(--u));
+}
+.field label,
+.field__label {
+  margin-bottom: calc(6 * var(--u));
+}
+.consent {
+  margin-top: calc(20 * var(--u));
+}
+.inquiry-form__submit {
+  margin-top: calc(24 * var(--u));
+}
+.map,
+.map__frame {
+  margin-top: calc(26 * var(--u));
+}
+.message-page {
+  padding: calc(80 * var(--u)) 0 calc(96 * var(--u));
+}
+
+/* Phones and tablets: the same extra air, in plain pixels. */
+@media (max-width: 1023px) {
+  .hero__copy {
+    padding-top: 36px;
+    padding-bottom: 36px;
+  }
+  .hero__text {
+    margin-top: 18px;
+    line-height: 1.6;
+  }
+  .hero__buttons {
+    margin-top: 26px;
+  }
+  .props {
+    padding: 0;
+  }
+  .props__inner {
+    gap: 28px;
+    padding-top: 44px;
+    padding-bottom: 48px;
+  }
+  .prop p {
+    line-height: 1.55;
+  }
+  .cats {
+    padding-bottom: 52px;
+  }
+  .cats__inner {
+    padding-top: 52px;
+  }
+  .cats__intro {
+    line-height: 1.6;
+  }
+  .cats__link {
+    margin-bottom: 26px;
+  }
+  .cats__grid {
+    gap: 14px;
+  }
+  .cat-card__label {
+    min-height: 58px;
+    padding-inline: 14px 12px;
+  }
+  .why {
+    margin-top: 0;
+  }
+  .why__copy {
+    padding-top: 40px;
+    padding-bottom: 56px;
+  }
+  .why__text {
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .why__btn {
+    margin-top: 24px;
+  }
+  .why__stats {
+    margin-top: 36px;
+  }
+  .cta {
+    height: auto;
+    margin-top: 0;
+  }
+  .cta__band {
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  .cta__text {
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+  .cta__btn {
+    margin-top: 24px;
+  }
+  .footer__inner {
+    height: auto;
+    gap: 32px 24px;
+    padding-top: 44px;
+    padding-bottom: 40px;
+  }
+  .footer__col {
+    line-height: 1.8;
+  }
+  .footer__col h2 {
+    margin-bottom: 8px;
+  }
+
+  .section {
+    padding: 56px 0;
+  }
+  .section--tight {
+    padding: 32px 0;
+  }
+  .grid {
+    gap: 20px;
+    margin-top: 26px;
+  }
+  .title + .grid,
+  .subtitle + .grid {
+    margin-top: 24px;
+  }
+  .title--sm {
+    margin-bottom: 22px;
+  }
+  .subtitle {
+    margin: 30px 0 14px;
+  }
+  .page-hero__body {
+    padding-top: 26px;
+    padding-bottom: 40px;
+  }
+  .page-hero__intro {
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+  .crumbs {
+    margin-bottom: 20px;
+  }
+  .split,
+  .product,
+  .product-detail,
+  .contact {
+    gap: 36px;
+  }
+  .prose {
+    line-height: 1.7;
+  }
+  .prose > * + * {
+    margin-top: 14px;
+  }
+  .card {
+    padding: 24px;
+  }
+  .card h3 {
+    margin-top: 16px;
+  }
+  .card p {
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .product-card__body,
+  .news-card__body {
+    padding: 18px 18px 20px;
+  }
+  .product-card__text {
+    margin: 10px 0 14px;
+    line-height: 1.6;
+  }
+  .partner-groups > * + * {
+    margin-top: 40px;
+  }
+  .partner-grid {
+    gap: 14px;
+  }
+  .partner-card {
+    padding: 20px 16px;
+  }
+  .pagination {
+    margin-top: 32px;
+  }
+  .article {
+    padding: 24px 0 56px;
+  }
+  .product-top {
+    padding-top: 22px;
+  }
+  .product__ids {
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .product__short {
+    margin-top: 18px;
+    line-height: 1.6;
+  }
+  .product__quote {
+    margin-top: 24px;
+  }
+  .contact__form {
+    padding: 28px 22px;
+  }
+  .contact__list {
+    gap: 18px;
+    margin-top: 22px;
+  }
+  .inquiry-form {
+    margin-top: 22px;
+  }
+  .form-grid {
+    gap: 18px;
+  }
+  .field label,
+  .field__label {
+    margin-bottom: 6px;
+  }
+  .consent {
+    margin-top: 20px;
+  }
+  .inquiry-form__submit {
+    margin-top: 22px;
+  }
+  .message-page {
+    padding: 72px 0 84px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero__copy {
+    padding-top: 48px;
+    padding-bottom: 44px;
+  }
+  .props__inner {
+    padding-top: 48px;
+    padding-bottom: 52px;
+  }
+  .cats__inner {
+    padding-top: 60px;
+  }
+  .cats__head {
+    margin-bottom: 30px;
+  }
+  .cats {
+    padding-bottom: 60px;
+  }
+  .why__copy {
+    padding-top: 48px;
+    padding-bottom: 64px;
+  }
+  .cta__band {
+    padding-top: 44px;
+    padding-bottom: 48px;
+  }
+  .section {
+    padding: 64px 0;
+  }
+  .contact__form {
+    padding: 36px 32px;
+  }
+  .footer__inner {
+    padding-top: 48px;
+  }
+}
+@media (max-width: 380px) {
+  .contact__form {
+    padding-inline: 18px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid--3 .product-card__body,
+  .grid--3 .news-card__body {
+    padding: 16px 14px 18px;
+  }
+  .grid--3 .product-card__name,
+  .grid--3 .news-card h3 {
+    font-size: 15.5px;
+  }
+  .product__ids dt {
+    min-width: 0;
+    flex: 0 0 96px;
+  }
+}
