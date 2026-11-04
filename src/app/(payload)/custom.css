@@ -945,3 +945,126 @@ html[data-theme='dark'] .ch-btn--primary {
 .ch-btn--danger:hover {
   border-color: var(--ch-red);
 }
+
+/*
+ * Editing comfort. Payload's own styles live in a lower cascade layer, so these plain rules win without !important.
+ */
+
+/* Rich text uses the same sans-serif as the website, so editors see copy the way visitors will. */
+.rich-text-lexical .editor-container {
+  font-family: var(--font-body);
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+
+/* Brand teal focus on every field, so the active input is obvious while tabbing through long forms. */
+.field-type input:focus,
+.field-type textarea:focus,
+.field-type .react-select .rs__control--is-focused {
+  border-color: var(--ch-teal);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ch-teal) 18%, transparent);
+}
+.field-type .rs__control--is-focused:hover {
+  border-color: var(--ch-teal);
+}
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--ch-teal);
+}
+
+/* Required markers and field descriptions read more clearly. */
+.field-description {
+  line-height: 1.5;
+}
+
+/* Tabs in edit views: the active tab picks up the brand colour. */
+.tabs-field__tab-button--active {
+  color: var(--ch-teal);
+}
+.tabs-field__tab-button--active::after,
+.tabs-field__tab-button:hover::after {
+  background-color: var(--ch-teal);
+}
+
+/* List views: a soft row highlight and a brand-coloured link make long tables easier to scan. */
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+.table tbody tr:hover td {
+  background-color: var(--theme-elevation-50);
+}
+.table td a {
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 3px;
+}
+.table td a:hover {
+  color: var(--ch-teal);
+  text-decoration-color: currentColor;
+}
+
+/* Dashboard collection groups: tighter spacing between each heading and its cards. */
+.dashboard .collections__group {
+  margin-bottom: 22px;
+}
+
+/* Sidebar: the current page is marked in brand teal. */
+.nav__link.active,
+.nav__link[aria-current='page'] {
+  color: var(--ch-teal);
+  font-weight: 600;
+}
+
+/* Phones and small tablets */
+@media (max-width: 768px) {
+  /* Wide list tables scroll sideways; a fade on the right edge says there is more to see. */
+  .table {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  }
+  .table th,
+  .table td {
+    padding-inline: 10px;
+  }
+  .ch-dash__head-actions {
+    width: 100%;
+  }
+  .ch-dash__head-actions .ch-btn {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+  .ch-dash__all {
+    margin-top: 28px;
+  }
+}
+@media (max-width: 600px) {
+  /* Only "Today" stays under the chart, so day labels never run into each other. */
+  .ch-chart li:not(:last-child) .ch-chart__day {
+    display: none;
+  }
+  .ch-chart__day {
+    font-size: 10.5px;
+  }
+  .ch-panel {
+    padding: 16px;
+  }
+  .ch-panel--flush {
+    padding-inline: 0;
+  }
+  .ch-panel--flush > .ch-panel__head {
+    padding-inline: 16px;
+  }
+  .ch-quick {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ch-quick a {
+    padding: 10px;
+    font-size: 12.5px;
+  }
+  .template-minimal__wrap {
+    padding: 32px 22px 26px;
+    border-radius: 14px;
+  }
+  .ch-login-intro h1 {
+    font-size: 20px;
+  }
+}

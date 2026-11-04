@@ -28,6 +28,7 @@ import { DashboardHome as DashboardHome_84cd845a8766cfd3c2cceae49d5dee3d } from 
 import { LoginIntro as LoginIntro_db845eae23ef682757f9df5d4893ae70 } from '../../../components/admin/AdminBrand'
 import { InquiriesNavBadge as InquiriesNavBadge_bf2fe81d154bb8bbbabff65e835960b0 } from '../../../components/admin/InquiriesNavBadge'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
+import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
@@ -60,5 +61,6 @@ export const importMap = {
   "/components/admin/DashboardHome#DashboardHome": DashboardHome_84cd845a8766cfd3c2cceae49d5dee3d,
   "/components/admin/AdminBrand#LoginIntro": LoginIntro_db845eae23ef682757f9df5d4893ae70,
   "/components/admin/InquiriesNavBadge#InquiriesNavBadge": InquiriesNavBadge_bf2fe81d154bb8bbbabff65e835960b0,
-  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
+  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e
 }

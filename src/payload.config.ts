@@ -66,6 +66,8 @@ export default buildConfig({
   },
   admin: {
     user: Users.slug,
+    // Built-in initials avatar: no broken image offline, and staff emails are not sent to Gravatar.
+    avatar: 'default',
     importMap: { baseDir: dirname },
     meta: {
       titleSuffix: ' · Chemillion Admin',

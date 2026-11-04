@@ -26,7 +26,8 @@ html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 90px;
+  /* The sticky header grows with the window from 1024 px up, so anchors clear it at every size. */
+  scroll-padding-top: calc(74 * var(--u) + 16px);
 }
 @media (min-width: 1024px) {
   html {
@@ -1830,14 +1831,28 @@ button.map {
     height: 14px;
   }
 
+  html {
+    scroll-padding-top: 84px;
+  }
   .header__inner {
     height: 68px;
     padding: 0 20px;
   }
   .header__nav,
-  .header__cta,
-  .header__search {
+  .header__cta {
     display: none;
+  }
+  .header__actions {
+    gap: 10px;
+  }
+  /* Search stays one tap away on phones and tablets. */
+  .header__search {
+    width: 44px;
+    height: 44px;
+  }
+  .header__search svg {
+    width: 18px;
+    height: 18px;
   }
   .logo__word {
     font-size: 27px;
@@ -2649,5 +2664,527 @@ button.map {
       animation-timeline: view();
       animation-range: entry 0% entry 60%;
     }
+  }
+}
+
+/*
+ * UX refinements. These sit on top of the mockup-matched rules above and never change the look at the mockup's
+ * width: they tidy typography, make controls feel finished, and give tablets a layout of their own instead of a
+ * stretched phone layout.
+ */
+
+/* Typography: balanced headings and no orphaned last words in short paragraphs. */
+.title,
+.hero__title,
+.subtitle,
+.cta__head h2,
+.card h3,
+.news-card h3,
+.form-done h3,
+.prose h2,
+.prose h3 {
+  text-wrap: balance;
+}
+.lead,
+.hero__text,
+.why__text,
+.cats__intro,
+.cta__text,
+.page-hero__intro,
+.prop p,
+.card p,
+.product-card__text,
+.news-card__text,
+.prose p {
+  text-wrap: pretty;
+}
+.title,
+.hero__title,
+.product-card__name,
+.news-card h3 {
+  overflow-wrap: break-word;
+}
+::selection {
+  background: rgba(15, 107, 112, 0.18);
+  color: var(--ink);
+}
+
+/* Touch: no grey flash on tap, and buttons press in slightly so a tap feels answered. */
+a,
+button,
+summary,
+label {
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active,
+.chip:active,
+.header__burger:active,
+.header__search:active {
+  transform: scale(0.97);
+}
+.btn {
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+}
+.btn--primary:focus-visible,
+.btn--white:focus-visible {
+  outline-offset: 3px;
+}
+.chip {
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.chip:hover:not([aria-pressed='true']):not([aria-current='page']) {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.pagination a {
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.pagination a:hover:not([aria-current='page']) {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.docs a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gallery__thumb {
+  transition: border-color 0.18s ease, opacity 0.18s ease;
+}
+.gallery__thumb[aria-pressed='false'] {
+  opacity: 0.75;
+}
+.gallery__thumb:hover {
+  opacity: 1;
+}
+.partner-card {
+  transition: box-shadow 0.18s ease;
+}
+.partner-card:hover {
+  box-shadow: 0 calc(6 * var(--u)) calc(18 * var(--u)) rgba(20, 30, 40, 0.1);
+}
+
+/* Forms: branded checkboxes, a styled file picker, hover and placeholder states. */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--teal);
+}
+.consent input[type='checkbox'] {
+  flex: none;
+  width: calc(15 * var(--u));
+  height: calc(15 * var(--u));
+  margin: calc(1 * var(--u)) 0 0;
+  cursor: pointer;
+}
+.consent label {
+  cursor: pointer;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #9a9ea3;
+}
+.field input:hover:not(:focus),
+.field select:hover:not(:focus),
+.field textarea:hover:not(:focus),
+.multi summary:hover {
+  border-color: #a9adb2;
+}
+.field textarea {
+  resize: vertical;
+}
+.field select {
+  cursor: pointer;
+}
+.field input[type='file'] {
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.field input[type='file']::file-selector-button {
+  margin-right: calc(10 * var(--u));
+  padding: calc(5 * var(--u)) calc(14 * var(--u));
+  border: 0;
+  border-radius: 999px;
+  background: #e6f0f1;
+  color: var(--teal);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+.field input[type='file']:hover::file-selector-button {
+  background: #d4e6e8;
+}
+.has-error input:focus,
+.has-error select:focus,
+.has-error textarea:focus {
+  outline-color: rgba(196, 18, 47, 0.2);
+}
+.search-form input:focus {
+  border-color: var(--teal);
+  outline: 2px solid rgba(15, 107, 112, 0.25);
+  outline-offset: 0;
+}
+
+/* Product page: the floating quote button only appears once the page's own one has scrolled away. */
+.sticky-quote {
+  opacity: 0;
+  translate: 0 calc(12 * var(--u));
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.25s ease;
+}
+.sticky-quote.is-visible {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+/* Spec tables: zebra rows read better across three columns. */
+.spec-table tbody tr:nth-child(even) {
+  background: #fafbfb;
+}
+
+/* Mobile menu: it scrolls on short landscape phones and fades in rather than snapping open. */
+@media (max-width: 1023px) {
+  .mobile-panel {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  .mobile-panel__cta {
+    margin-top: 24px;
+    flex: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-panel:not([hidden]) {
+      animation: fade 0.2s ease-out both;
+    }
+    .mobile-panel:not([hidden]) li {
+      animation: rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .mobile-panel:not([hidden]) li:nth-child(2) {
+      animation-delay: 0.03s;
+    }
+    .mobile-panel:not([hidden]) li:nth-child(3) {
+      animation-delay: 0.06s;
+    }
+    .mobile-panel:not([hidden]) li:nth-child(4) {
+      animation-delay: 0.09s;
+    }
+    .mobile-panel:not([hidden]) li:nth-child(n + 5) {
+      animation-delay: 0.12s;
+    }
+  }
+  .header__search,
+  .header__burger {
+    transition: border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
+  }
+  .header__burger[aria-expanded='true'] {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  /* The bar along the bottom of phones and tablets keeps clear of the home indicator. */
+  .sticky-quote {
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    translate: 0 100%;
+  }
+  /* Keeps the footer's last line clear of the quote bar. */
+  body:has(.sticky-quote) {
+    padding-bottom: 68px;
+  }
+
+  .consent input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+  /* Footer links get a full-size tap area. */
+  .footer__col ul:not(.footer__social) a {
+    display: inline-block;
+    padding: 3px 0;
+  }
+}
+
+/* Tablets get their own layout: multi-column sections instead of a stretched phone page. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero__copy {
+    padding: 40px 40px 32px;
+  }
+  .hero__text {
+    max-width: 600px;
+  }
+  .hero__buttons .btn--primary,
+  .hero__buttons .btn--outline {
+    flex: 0 0 auto;
+    min-width: 200px;
+    padding: 0 28px;
+  }
+  .container,
+  .cats__inner {
+    padding-inline: 40px;
+  }
+  .why__copy,
+  .header__inner {
+    padding-inline: 40px;
+  }
+
+  .props__inner {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 32px 40px;
+  }
+  .prop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 0 22px;
+  }
+  .prop:first-child {
+    padding-left: 0;
+  }
+  .prop:last-child {
+    padding-right: 0;
+  }
+  .prop + .prop::before {
+    display: block;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+  }
+
+  .cats__head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 8px 24px;
+    margin-bottom: 24px;
+  }
+  .cats__intro {
+    grid-column: 1;
+    max-width: 520px;
+  }
+  .cats__link {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0 0 6px;
+  }
+
+  .why__copy {
+    padding-top: 36px;
+    padding-bottom: 44px;
+  }
+  .why__visual {
+    width: 88%;
+  }
+  .why__stats {
+    max-width: 560px;
+  }
+
+  .cta__image {
+    height: 160px;
+  }
+  .cta__band {
+    padding: 32px 40px 36px;
+  }
+  .cta__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 0 32px;
+  }
+  .cta__text {
+    grid-column: 1;
+    max-width: 520px;
+  }
+  .cta__btn {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    margin: 0;
+  }
+
+  .footer__inner {
+    grid-template-columns: auto auto 1fr;
+    gap: 28px 48px;
+    padding: 36px 40px 32px;
+  }
+  .footer__col--contact {
+    grid-column: auto;
+  }
+  .footer__col--social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eceef0;
+  }
+  .footer__col--social h2 {
+    margin: 0;
+  }
+  .footer__social {
+    margin: 0 auto 0 0;
+  }
+  .footer__copy {
+    margin: 0;
+  }
+
+  .page-hero__visual {
+    height: 260px;
+  }
+  .page-hero__body {
+    padding-top: 26px;
+    padding-bottom: 34px;
+  }
+
+  /* Side-by-side story and product layouts fit comfortably from 768 px. */
+  .split {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .product {
+    grid-template-columns: 1.05fr 1fr;
+    gap: 28px;
+  }
+  .contact {
+    grid-template-columns: 1fr;
+  }
+  .contact__side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
+    gap: 0 28px;
+    align-items: start;
+  }
+  .contact__side > * {
+    grid-column: 1;
+  }
+  .contact__side > .map,
+  .contact__side > .map__frame {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+    margin-top: 0;
+  }
+}
+
+/*
+ * Category cards never leave a lone card on the last row: on three columns the last two centre, and on two
+ * columns the last odd card runs the full width as a wide banner.
+ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cats__grid,
+  .grid--3:has(> .cat-card) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .cats__grid > .cat-card,
+  .grid--3 > .cat-card {
+    grid-column: span 2;
+  }
+  .cats__grid > .cat-card:nth-child(3n + 1):nth-last-child(2),
+  .grid--3 > .cat-card:nth-child(3n + 1):nth-last-child(2) {
+    grid-column: 2 / span 2;
+  }
+  .cats__grid > .cat-card:nth-child(3n + 1):last-child,
+  .grid--3 > .cat-card:nth-child(3n + 1):last-child {
+    grid-column: 3 / span 2;
+  }
+}
+@media (max-width: 767px) {
+  .grid--3:has(> .cat-card) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .cats__grid > .cat-card:nth-child(odd):last-child,
+  .grid--3 > .cat-card:nth-child(odd):last-child {
+    grid-column: 1 / -1;
+  }
+  .cats__grid > .cat-card:nth-child(odd):last-child .cat-card__img,
+  .grid--3 > .cat-card:nth-child(odd):last-child .cat-card__img {
+    aspect-ratio: 3 / 1;
+  }
+  .cat-card__label {
+    padding: 8px 10px 8px 12px;
+  }
+
+  /* Phones: two-up partner cards and tighter cards keep long lists scannable. */
+  .hero__copy {
+    padding-top: 24px;
+  }
+  .hero__buttons .btn--primary,
+  .hero__buttons .btn--outline {
+    flex-basis: 100%;
+  }
+  .why__stats .stats__item dt {
+    white-space: normal;
+    line-height: 1.3;
+  }
+  .stats__item dd {
+    font-size: 30px;
+  }
+  .contact__form {
+    margin-inline: -8px;
+  }
+  .chips {
+    flex-wrap: nowrap;
+    padding: 2px 0 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+  .chip {
+    flex: none;
+  }
+  .product__ids div {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+}
+@media (max-width: 380px) {
+  .header__inner {
+    padding-inline: 16px;
+  }
+  .container,
+  .cats__inner,
+  .hero__copy,
+  .why__copy,
+  .props__inner {
+    padding-inline: 16px;
+  }
+  .cta__band {
+    padding-inline: 16px;
+  }
+  .logo__word {
+    font-size: 24px;
+  }
+  .hero__title {
+    font-size: clamp(36px, 12.5vw, 64px);
+  }
+}
+
+/* Print: a clean page of the content, with no navigation chrome, overlays or entrance animations. */
+@media print {
+  .header,
+  .mobile-panel,
+  .sticky-quote,
+  .skip-link,
+  .preview-bar,
+  .cta,
+  .footer__social,
+  .chips {
+    display: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  body {
+    font-size: 11pt;
+  }
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
   }
 }
