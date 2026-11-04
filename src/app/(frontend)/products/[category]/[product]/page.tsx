@@ -4,6 +4,7 @@ import { ProductCard } from '@/components/Cards'
 import { Icon } from '@/components/Icon'
 import { Breadcrumbs } from '@/components/PageHero'
 import { ProductGallery } from '@/components/ProductGallery'
+import { StickyQuote } from '@/components/StickyQuote'
 import { Button, JsonLd, plainHeadline } from '@/components/ui'
 import { t } from '@/i18n/en'
 import { asMedia, getAllProducts, getCategory, getGlobal, getProduct, getProductsByCategory, getSettings } from '@/lib/cms'
@@ -194,10 +195,10 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      <div className="sticky-quote">
+      <StickyQuote watch=".product__quote">
         <span>{product.name}</span>
         <Button href={quoteHref}>{quoteLabel}</Button>
-      </div>
+      </StickyQuote>
 
       <JsonLd data={productLd(product, settings)} />
     </>

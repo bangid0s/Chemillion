@@ -308,6 +308,8 @@ export interface Media {
    */
   alt: string;
   caption?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -399,6 +401,8 @@ export interface ProductCategory {
  */
 export interface InquiryAttachment {
   id: number;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -863,6 +867,8 @@ export interface NewsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -894,6 +900,8 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "inquiry-attachments_select".
  */
 export interface InquiryAttachmentsSelect<T extends boolean = true> {
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
