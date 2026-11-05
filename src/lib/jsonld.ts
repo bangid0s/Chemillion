@@ -1,4 +1,4 @@
-import type { News, Product, SiteSetting } from '@/payload-types'
+import type { SiteSetting } from '@/payload-types'
 import { asMedia } from './cms'
 import { absoluteUrl, siteUrl } from './url'
 
@@ -52,32 +52,3 @@ export const breadcrumbLd = (items: { label: string; href?: string }[]) => ({
     item: item.href ? absoluteUrl(item.href) : undefined,
   })),
 })
-
-export const productLd = (product: Product, settings: SiteSetting) => {
-  const image = asMedia(product.gallery?.[0]?.image)
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.name,
-    description: product.shortDescription ?? undefined,
-    image: image?.url ? absoluteUrl(image.url) : undefined,
-    brand: { '@type': 'Brand', name: settings.companyName },
-    additionalProperty: [
-      product.casNumber && { '@type': 'PropertyValue', name: 'CAS number', value: product.casNumber },
-      product.grade && { '@type': 'PropertyValue', name: 'Grade', value: product.grade },
-    ].filter(Boolean),
-  }
-}
-
-export const articleLd = (article: News, settings: SiteSetting) => {
-  const cover = asMedia(article.cover)
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'NewsArticle',
-    headline: article.title,
-    image: cover?.url ? [absoluteUrl(cover.url)] : undefined,
-    datePublished: article.publishedAt,
-    dateModified: article.updatedAt,
-    author: { '@type': article.author ? 'Person' : 'Organization', name: article.author || settings.companyName },
-  }
-}

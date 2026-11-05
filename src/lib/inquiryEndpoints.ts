@@ -40,7 +40,7 @@ export const exportInquiriesCsv: PayloadHandler = async (req) => {
     d.email,
     d.phone,
     d.country,
-    (d.products ?? []).map((p) => (typeof p === 'object' ? p.name : p)).join('; '),
+    d.productInterest,
     d.quantity,
     d.message,
     typeof d.assignedTo === 'object' ? d.assignedTo?.name : d.assignedTo,

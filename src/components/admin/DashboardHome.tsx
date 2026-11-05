@@ -16,6 +16,13 @@ const STATUS_LABEL: Record<string, string> = { ...Object.fromEntries(STATUSES.ma
 
 const ORIGIN_LABEL: Record<string, string> = { contact: 'Contact', quote: 'Get a Quote', product: 'Product page', partner: 'Partner' }
 
+const PAGES = [
+  { slug: 'home-page', label: 'Home' },
+  { slug: 'about-page', label: 'About Us' },
+  { slug: 'contact-page', label: 'Contact' },
+  { slug: 'privacy-page', label: 'Privacy Policy' },
+] as const
+
 const inquiriesWhere = (query: string) => `/admin/collections/inquiries?${query}`
 const statusHref = (status: string) => inquiriesWhere(`where[status][equals]=${status}`)
 
@@ -41,7 +48,7 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
   const chartStart = new Date(today.getTime() - (CHART_DAYS - 1) * DAY)
   const open = { status: { in: ['new', 'in_progress'] } }
 
-  const [statusCounts, last30, prev30, unassigned, recentInquiries, latest, products, productDrafts, newsDrafts, scheduled, editedProducts, editedNews] =
+  const [statusCounts, last30, prev30, unassigned, recentInquiries, latest, pages] =
     await Promise.all([
       Promise.all(STATUSES.map((s) => payload.count({ collection: 'inquiries', where: { status: { equals: s.value } } }))),
       payload.count({ collection: 'inquiries', where: { createdAt: { greater_than_equal: since30 }, status: { not_equals: 'spam' } } }),
@@ -59,12 +66,9 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
         select: { createdAt: true },
       }),
       payload.find({ collection: 'inquiries', limit: 6, sort: '-createdAt', depth: 0, where: { status: { not_equals: 'spam' } } }),
-      payload.count({ collection: 'products' }),
-      payload.count({ collection: 'products', where: { _status: { equals: 'draft' } } }),
-      payload.count({ collection: 'news', where: { _status: { equals: 'draft' } } }),
-      payload.count({ collection: 'news', where: { publishedAt: { greater_than: new Date(now).toISOString() } } }),
-      payload.find({ collection: 'products', limit: 5, sort: '-updatedAt', depth: 0, draft: true }),
-      payload.find({ collection: 'news', limit: 5, sort: '-updatedAt', depth: 0, draft: true }),
+      Promise.all(
+        PAGES.map(async (p) => ({ ...p, doc: await payload.findGlobal({ slug: p.slug, depth: 0, draft: true }) })),
+      ),
     ])
 
   const counts = Object.fromEntries(STATUSES.map((s, i) => [s.value, statusCounts[i].totalDocs])) as Record<string, number>
@@ -86,31 +90,23 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
   const peak = Math.max(4, ...days.map((d) => d.count))
   const chartTotal = days.reduce((sum, d) => sum + d.count, 0)
 
-  const recent = [
-    ...editedProducts.docs.map((d) => ({
-      kind: 'Product',
-      label: d.name,
-      at: d.updatedAt,
-      draft: d._status === 'draft',
-      href: `/admin/collections/products/${d.id}`,
-    })),
-    ...editedNews.docs.map((d) => ({
-      kind: 'News',
-      label: d.title,
-      at: d.updatedAt,
-      draft: d._status === 'draft',
-      href: `/admin/collections/news/${d.id}`,
-    })),
-  ]
+  const recent = pages
+    .filter((p) => p.doc.updatedAt)
+    .map((p) => ({
+      kind: 'Page',
+      label: p.label,
+      at: p.doc.updatedAt as string,
+      draft: (p.doc as { _status?: string })._status === 'draft',
+      href: `/admin/globals/${p.slug}`,
+    }))
     .sort((a, b) => b.at.localeCompare(a.at))
     .slice(0, 5)
+  const pageDrafts = recent.filter((p) => p.draft).length
 
   const attention = [
     { count: counts.new, label: 'new inquiries to reply to', href: statusHref('new'), icon: 'inbox', urgent: true },
     { count: unassigned.totalDocs, label: 'open inquiries with no owner', href: inquiriesWhere('where[assignedTo][exists]=false'), icon: 'user' },
-    { count: productDrafts.totalDocs, label: 'product drafts not published', href: '/admin/collections/products?where[_status][equals]=draft', icon: 'box' },
-    { count: newsDrafts.totalDocs, label: 'news drafts not published', href: '/admin/collections/news?where[_status][equals]=draft', icon: 'file' },
-    { count: scheduled.totalDocs, label: 'news posts scheduled', href: '/admin/collections/news', icon: 'clock' },
+    { count: pageDrafts, label: pageDrafts === 1 ? 'page with unpublished changes' : 'pages with unpublished changes', href: recent.find((p) => p.draft)?.href ?? '/admin', icon: 'file' },
   ].filter((item) => item.count > 0)
 
   const name = (user as { name?: string } | undefined)?.name
@@ -176,15 +172,13 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
             {delta === 0 ? 'Same as the 30 days before' : `${delta > 0 ? '▲' : '▼'} ${Math.abs(delta)} vs the 30 days before`}
           </span>
         </Link>
-        <Link className="ch-kpi" href="/admin/collections/products">
+        <Link className="ch-kpi" href={statusHref('quoted')}>
           <span className="ch-kpi__icon">
-            <Icon name="box" />
+            <Icon name="file" />
           </span>
-          <span className="ch-kpi__label">Products</span>
-          <strong className="ch-kpi__value">{products.totalDocs}</strong>
-          <span className="ch-kpi__meta">
-            {productDrafts.totalDocs ? `${productDrafts.totalDocs} still in draft` : 'All published'}
-          </span>
+          <span className="ch-kpi__label">Quoted</span>
+          <strong className="ch-kpi__value">{counts.quoted}</strong>
+          <span className="ch-kpi__meta">{counts.quoted ? 'Waiting for the customer to decide' : 'No open quotes'}</span>
         </Link>
       </div>
 
@@ -259,7 +253,7 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
                 </span>
                 <p>
                   <strong>No inquiries yet</strong>
-                  Submissions from the contact, quote and product forms land here, ready to assign and follow up.
+                  Submissions from the contact and quote form land here, ready to assign and follow up.
                 </p>
                 <a className="ch-btn" href="/contact" target="_blank" rel="noopener noreferrer">
                   <Icon name="external" />
@@ -339,13 +333,9 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
               <h3>Quick actions</h3>
             </div>
             <div className="ch-quick">
-              <Link href="/admin/collections/products/create">
-                <Icon name="plus" />
-                Add product
-              </Link>
-              <Link href="/admin/collections/news/create">
-                <Icon name="file" />
-                Write news
+              <Link href="/admin/collections/product-categories">
+                <Icon name="box" />
+                Product categories
               </Link>
               <Link href="/admin/collections/media/create">
                 <Icon name="image" />
@@ -361,9 +351,9 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
                   Site settings
                 </Link>
               )}
-              <Link href="/admin/collections/partners">
-                <Icon name="users" />
-                Partners
+              <Link href="/admin/globals/about-page">
+                <Icon name="file" />
+                Edit About page
               </Link>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getCategories, getSettings } from '@/lib/cms'
+import { getCategories, getSettings, quoteHref } from '@/lib/cms'
 import { t } from '@/i18n/en'
 import { getNavItems } from './Header'
 import { Icon } from './Icon'
@@ -33,7 +33,7 @@ export const Footer = async () => {
           <ul>
             {categories.slice(0, 5).map((c) => (
               <li key={c.id}>
-                <Link href={`/products/${c.slug}`}>{c.name}</Link>
+                <Link href={quoteHref(c.name)}>{c.name}</Link>
               </li>
             ))}
           </ul>

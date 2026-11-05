@@ -13,10 +13,6 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { InquiryAttachments } from './collections/InquiryAttachments'
 import { ProductCategories } from './collections/ProductCategories'
-import { Products } from './collections/Products'
-import { PartnerTypes } from './collections/PartnerTypes'
-import { Partners } from './collections/Partners'
-import { News } from './collections/News'
 import { Inquiries } from './collections/Inquiries'
 import { Redirects } from './collections/Redirects'
 import { SiteSettings } from './globals/SiteSettings'
@@ -93,10 +89,6 @@ export default buildConfig({
   collections: [
     Inquiries,
     ProductCategories,
-    Products,
-    Partners,
-    PartnerTypes,
-    News,
     Media,
     InquiryAttachments,
     Redirects,
@@ -113,22 +105,11 @@ export default buildConfig({
       alwaysInsertFields: true,
     }),
     seoPlugin({
-      collections: [ProductCategories.slug, Products.slug, News.slug],
+      collections: [],
       globals: pageGlobals.map((g) => g.slug),
       uploadsCollection: Media.slug,
       tabbedUI: true,
-      generateTitle: ({ doc }) => {
-        const d = doc as { name?: string; title?: string }
-        return `${d.name || d.title || 'Chemillion'} | Chemillion`
-      },
-      generateDescription: ({ doc }) => {
-        const d = doc as { shortDescription?: string; description?: string; excerpt?: string }
-        return (d.shortDescription || d.excerpt || d.description || '').slice(0, 155)
-      },
-      generateURL: ({ doc, collectionSlug }) => {
-        const d = doc as { slug?: string }
-        return `${siteUrl}/${collectionSlug === 'news' ? 'news/' : ''}${d.slug || ''}`
-      },
+      generateTitle: () => 'Chemillion',
       fields: ({ defaultFields }) => [
         ...defaultFields,
         {

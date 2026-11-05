@@ -96,15 +96,6 @@ const HomePage = page('home-page', 'Home', '/', [
     ],
   },
   { label: 'CTA banner', fields: [ctaBannerGroup()] },
-  {
-    label: 'Optional sections',
-    fields: [
-      { name: 'showPartnersStrip', type: 'checkbox', label: 'Show Partners logo strip' },
-      { name: 'partnersStripTitle', type: 'text', localized: true },
-      { name: 'showLatestNews', type: 'checkbox', label: 'Show Latest News (3 cards)' },
-      { name: 'latestNewsTitle', type: 'text', localized: true },
-    ],
-  },
 ])
 
 const AboutPage = page('about-page', 'About Us', '/about', [
@@ -196,40 +187,6 @@ const AboutPage = page('about-page', 'About Us', '/about', [
   { label: 'CTA banner', fields: [ctaBannerGroup()] },
 ])
 
-const ProductsPage = page('products-page', 'Products', '/products', [
-  { label: 'Hero', name: 'hero', fields: pageHero() },
-  {
-    label: 'Labels',
-    name: 'labels',
-    fields: [
-      { name: 'productCountSingular', type: 'text', localized: true, defaultValue: 'product' },
-      { name: 'productCountPlural', type: 'text', localized: true, defaultValue: 'products' },
-      { name: 'requestQuote', type: 'text', localized: true, defaultValue: 'Request a Quote' },
-    ],
-  },
-  { label: 'CTA banner', fields: [ctaBannerGroup()] },
-])
-
-const PartnersPage = page('partners-page', 'Partners', '/partners', [
-  { label: 'Hero', name: 'hero', fields: pageHero() },
-  {
-    label: 'Become a partner',
-    name: 'become',
-    fields: [
-      eyebrowField(),
-      headlineField('title', 'Banner title: 3–8 words.'),
-      { name: 'text', type: 'textarea', localized: true },
-      { name: 'buttonLabel', type: 'text', localized: true },
-      imageField('image', 'Shown on the left, cut by the diagonal.'),
-    ],
-  },
-])
-
-const NewsPage = page('news-page', 'News', '/news', [
-  { label: 'Hero', name: 'hero', fields: pageHero() },
-  { label: 'CTA banner', fields: [ctaBannerGroup()] },
-])
-
 const ContactPage = page('contact-page', 'Contact', '/contact', [
   { label: 'Hero', name: 'hero', fields: pageHero() },
   {
@@ -264,4 +221,4 @@ const PrivacyPage = page('privacy-page', 'Privacy Policy', '/privacy', [
   },
 ])
 
-export const pageGlobals: GlobalConfig[] = [HomePage, AboutPage, ProductsPage, PartnersPage, NewsPage, ContactPage, PrivacyPage]
+export const pageGlobals: GlobalConfig[] = [HomePage, AboutPage, ContactPage, PrivacyPage]

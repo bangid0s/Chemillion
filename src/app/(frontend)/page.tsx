@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { BrandMark } from '@/components/BrandMark'
-import { CategoryCard, NewsCard } from '@/components/Cards'
+import { CategoryCard } from '@/components/Cards'
 import { CtaBanner } from '@/components/CtaBanner'
 import { Icon } from '@/components/Icon'
 import { HeroOverlay, WhyOverlay } from '@/components/Shapes'
 import { Stats } from '@/components/Stats'
 import { Button, CmsImage, Headline, SectionHead } from '@/components/ui'
-import { getCategories, getHome, getNewsPage, getPartners, getSettings } from '@/lib/cms'
+import { getCategories, getHome, getSettings } from '@/lib/cms'
 import { buildMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { plainHeadline } from '@/components/ui'
@@ -29,10 +29,6 @@ export default async function HomePage() {
   const [home, categories] = await Promise.all([getHome(), getCategories()])
   const { hero, valueProps, categories: catSection, why, cta } = home
   const homeCategories = categories.filter((c) => c.showOnHome).slice(0, MAX_HOME_CATEGORIES)
-  const [partnerGroups, latest] = await Promise.all([
-    home.showPartnersStrip ? getPartners() : Promise.resolve([]),
-    home.showLatestNews ? getNewsPage(1) : Promise.resolve(null),
-  ])
 
   return (
     <>
@@ -62,7 +58,7 @@ export default async function HomePage() {
           </h1>
           {hero?.text && <p className="hero__text">{hero.text}</p>}
           <div className="hero__buttons">
-            {hero?.primaryLabel && <Button href={hero.primaryLink || '/products'}>{hero.primaryLabel}</Button>}
+            {hero?.primaryLabel && <Button href={hero.primaryLink || '/#products'}>{hero.primaryLabel}</Button>}
             {hero?.secondaryLabel && (
               <Button href={hero.secondaryLink || '/about'} variant="outline">
                 {hero.secondaryLabel}
@@ -88,7 +84,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="cats">
+      <section className="cats" id="products">
         <div className="cats__inner">
           <div className="cats__head">
             <div className="cats__title">
@@ -96,7 +92,7 @@ export default async function HomePage() {
             </div>
             {catSection?.intro && <p className="cats__intro">{catSection.intro}</p>}
             {catSection?.linkLabel && (
-              <Link href={catSection.linkLink || '/products'} className="link-arrow cats__link">
+              <Link href={catSection.linkLink || '/contact?origin=quote#inquiry'} className="link-arrow cats__link">
                 {catSection.linkLabel}
                 <Icon name="arrow" />
               </Link>
@@ -128,37 +124,6 @@ export default async function HomePage() {
           <Stats stats={why?.stats} className="why__stats" />
         </div>
       </section>
-
-      {home.showPartnersStrip && partnerGroups.length > 0 && (
-        <section className="section partners-strip">
-          <div className="container">
-            {home.partnersStripTitle && <h2 className="title title--sm">{home.partnersStripTitle}</h2>}
-            <ul className="logo-row">
-              {partnerGroups
-                .flatMap((g) => g.partners)
-                .slice(0, 6)
-                .map((p) => (
-                  <li key={p.id}>
-                    <CmsImage media={p.logo} sizes="160px" fill={false} />
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
-      {latest && latest.docs.length > 0 && (
-        <section className="section section--grey">
-          <div className="container">
-            {home.latestNewsTitle && <h2 className="title title--sm">{home.latestNewsTitle}</h2>}
-            <div className="grid grid--3">
-              {latest.docs.slice(0, 3).map((article) => (
-                <NewsCard key={article.id} article={article} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <CtaBanner cta={cta} />
     </>

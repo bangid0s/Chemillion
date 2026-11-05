@@ -92,75 +92,13 @@ const seed = async () => {
     ['Other Products', 'other-products', 'Blue chemical drums stacked on warehouse racks', 'truck'],
   ] as const
 
-  const categories = []
   const categoryImages: number[] = []
   for (const [name, file, alt, icon] of categorySeeds) {
     const media = (await image(`${file}.jpg`, alt)) as number
     categoryImages.push(media)
-    categories.push(
-      await payload.create({
-        collection: 'product-categories',
-        data: { name, slug: file, description: LOREM, image: media, icon, showOnHome: true, _status: 'published' },
-      }),
-    )
-  }
-
-  payload.logger.info('Creating products…')
-  for (const [c, category] of categories.entries()) {
-    for (let i = 1; i <= 4; i++) {
-      const name = `${category.name.replace(/s$/, '').split(' ')[0]} Sample Product ${i}`
-      await payload.create({
-        collection: 'products',
-        data: {
-          name,
-          category: category.id,
-          casNumber: `000-0${c}-${i}`,
-          grade: 'Lorem grade',
-          synonyms: 'Lorem ipsum, dolor sit amet',
-          shortDescription: LOREM_SHORT,
-          description: rich(LOREM_LONG, LOREM_MORE),
-          gallery: [{ image: categoryImages[c] }, { image: categoryImages[(c + 1) % categoryImages.length] }],
-          specs: [
-            { property: 'Lorem ipsum', value: '00.0', unit: '%' },
-            { property: 'Dolor sit', value: '0.00', unit: 'g/cm³' },
-            { property: 'Amet consectetur', value: '000', unit: '°C' },
-            { property: 'Adipiscing elit', value: 'Lorem', unit: '' },
-          ],
-          applications: [{ label: 'Lorem' }, { label: 'Ipsum' }, { label: 'Dolor' }],
-          packaging: [{ label: '25 kg lorem' }, { label: '200 kg ipsum' }],
-          _status: 'published',
-        },
-      })
-    }
-  }
-
-  payload.logger.info('Creating partners…')
-  const types = await Promise.all(['Principals', 'Suppliers', 'Clients', 'Distributors'].map((name) => payload.create({ collection: 'partner-types', data: { name } })))
-  for (let i = 1; i <= 8; i++) {
-    const logo = await image(`partner-${i}.png`, `Partner ${i} logo placeholder`)
     await payload.create({
-      collection: 'partners',
-      data: { name: `Partner ${i}`, logo, type: types[(i - 1) % types.length].id, description: 'Lorem ipsum dolor sit amet.', visible: true },
-    })
-  }
-
-  payload.logger.info('Creating news…')
-  for (let i = 1; i <= 10; i++) {
-    const published = new Date()
-    published.setDate(published.getDate() - i * 9)
-    await payload.create({
-      collection: 'news',
-      data: {
-        title: `Lorem ipsum dolor sit amet consectetur ${i}`,
-        excerpt: LOREM_SHORT,
-        cover: categoryImages[i % categoryImages.length],
-        body: rich(LOREM_LONG, '## Lorem ipsum dolor', LOREM_MORE, LOREM_LONG),
-        publishedAt: published.toISOString(),
-        author: 'Lorem Ipsum',
-        category: i % 2 ? 'Lorem' : 'Ipsum',
-        tags: ['lorem', 'ipsum'],
-        _status: 'published',
-      },
+      collection: 'product-categories',
+      data: { name, image: media, icon, showOnHome: true, _status: 'published' },
     })
   }
 
@@ -183,7 +121,7 @@ const seed = async () => {
         title: 'Reliable\nChemicals\n*for a Better\nTomorrow*',
         text: LOREM,
         primaryLabel: 'Explore Products',
-        primaryLink: '/products',
+        primaryLink: '/#products',
         secondaryLabel: 'About Chemillion',
         secondaryLink: '/about',
         image: hero,
@@ -201,8 +139,8 @@ const seed = async () => {
         eyebrow: 'Our Products',
         title: 'Product *Categories*',
         intro: LOREM,
-        linkLabel: 'View All Products',
-        linkLink: '/products',
+        linkLabel: 'Request a Quote',
+        linkLink: '/contact?origin=quote#inquiry',
       },
       why: {
         eyebrow: 'Why Chemillion',
@@ -218,10 +156,6 @@ const seed = async () => {
         ],
       },
       cta,
-      showPartnersStrip: false,
-      partnersStripTitle: 'Our Partners',
-      showLatestNews: false,
-      latestNewsTitle: 'Latest News',
     },
   })
 
@@ -275,40 +209,6 @@ const seed = async () => {
   })
 
   await payload.updateGlobal({
-    slug: 'products-page',
-    data: {
-      _status: 'published',
-      hero: { eyebrow: 'Our Products', title: 'Product *Categories*', intro: LOREM, image: categoryImages[0] },
-      labels: { productCountSingular: 'product', productCountPlural: 'products', requestQuote: 'Request a Quote' },
-      cta,
-    },
-  })
-
-  await payload.updateGlobal({
-    slug: 'partners-page',
-    data: {
-      _status: 'published',
-      hero: { eyebrow: 'Our Network', title: 'Our *Partners*', intro: LOREM, image: categoryImages[4] },
-      become: {
-        eyebrow: 'Work With Us',
-        title: 'Become a Partner',
-        text: LOREM,
-        buttonLabel: 'Become a Partner',
-        image: ctaImage,
-      },
-    },
-  })
-
-  await payload.updateGlobal({
-    slug: 'news-page',
-    data: {
-      _status: 'published',
-      hero: { eyebrow: 'Latest Updates', title: 'News &\n*Updates*', intro: LOREM, image: categoryImages[3] },
-      cta,
-    },
-  })
-
-  await payload.updateGlobal({
     slug: 'contact-page',
     data: {
       _status: 'published',
@@ -338,9 +238,6 @@ const seed = async () => {
     data: {
       items: [
         { label: 'About Us', link: '/about', visible: true },
-        { label: 'Products', link: '/products', visible: true },
-        { label: 'Partners', link: '/partners', visible: true },
-        { label: 'News', link: '/news', visible: true },
         { label: 'Contact', link: '/contact', visible: true },
       ],
       ctaLabel: 'Get a Quote',
@@ -367,7 +264,7 @@ const seed = async () => {
       ],
       copyright: '© {year} Chemillion. All rights reserved.',
       followLabel: 'Follow Us',
-      inquiryTypes: [{ label: 'Product quote' }, { label: 'General' }, { label: 'Partnership' }, { label: 'Other' }],
+      inquiryTypes: [{ label: 'Product quote' }, { label: 'General' }, { label: 'Other' }],
       autoReplySubject: 'We received your inquiry',
       autoReplyBody: 'Hello {name},\n\nThank you for contacting Chemillion. Our team will reply shortly.\n\nChemillion',
       retentionMonths: 24,

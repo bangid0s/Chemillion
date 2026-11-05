@@ -181,12 +181,6 @@ for (const [name, box] of Object.entries(cats)) await save(await crop(box), `${n
 
 // Neutral stand-ins for logos and the map
 const svgImage = (name, svg) => sharp(Buffer.from(svg)).png().toFile(path.join(out, name))
-for (let i = 1; i <= 8; i++) {
-  await svgImage(
-    `partner-${i}.png`,
-    `<svg xmlns="http://www.w3.org/2000/svg" width="480" height="160"><rect width="480" height="160" fill="#fff"/><circle cx="84" cy="80" r="42" fill="${i % 2 ? '#0f6b70' : '#e1183a'}"/><text x="146" y="96" font-family="Arial,sans-serif" font-size="44" font-weight="700" fill="#1b191a">Partner ${i}</text></svg>`,
-  )
-}
 for (let i = 1; i <= 3; i++) {
   await svgImage(
     `certification-${i}.png`,

@@ -69,10 +69,6 @@ export interface Config {
   collections: {
     inquiries: Inquiry;
     'product-categories': ProductCategory;
-    products: Product;
-    partners: Partner;
-    'partner-types': PartnerType;
-    news: News;
     media: Media;
     'inquiry-attachments': InquiryAttachment;
     redirects: Redirect;
@@ -86,10 +82,6 @@ export interface Config {
   collectionsSelect: {
     inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     'product-categories': ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
-    products: ProductsSelect<false> | ProductsSelect<true>;
-    partners: PartnersSelect<false> | PartnersSelect<true>;
-    'partner-types': PartnerTypesSelect<false> | PartnerTypesSelect<true>;
-    news: NewsSelect<false> | NewsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'inquiry-attachments': InquiryAttachmentsSelect<false> | InquiryAttachmentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -106,9 +98,6 @@ export interface Config {
   globals: {
     'home-page': HomePage;
     'about-page': AboutPage;
-    'products-page': ProductsPage;
-    'partners-page': PartnersPage;
-    'news-page': NewsPage;
     'contact-page': ContactPage;
     'privacy-page': PrivacyPage;
     navigation: Navigation;
@@ -117,9 +106,6 @@ export interface Config {
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
-    'products-page': ProductsPageSelect<false> | ProductsPageSelect<true>;
-    'partners-page': PartnersPageSelect<false> | PartnersPageSelect<true>;
-    'news-page': NewsPageSelect<false> | NewsPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'privacy-page': PrivacyPageSelect<false> | PrivacyPageSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
@@ -165,7 +151,7 @@ export interface Inquiry {
   phone: string;
   country?: string | null;
   type: string;
-  products?: (number | Product)[] | null;
+  productInterest?: string | null;
   quantity?: string | null;
   message: string;
   attachment?: (number | null) | InquiryAttachment;
@@ -199,201 +185,6 @@ export interface Inquiry {
   assignedTo?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  name: string;
-  casNumber?: string | null;
-  grade?: string | null;
-  /**
-   * Other names buyers search for, separated by commas.
-   */
-  synonyms?: string | null;
-  /**
-   * Shown on product cards. Up to 160 characters.
-   */
-  shortDescription?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  gallery?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  specs?:
-    | {
-        property: string;
-        value: string;
-        unit?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  applications?:
-    | {
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  packaging?:
-    | {
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * TDS, SDS or COA PDFs for visitors to download.
-   */
-  documents?:
-    | {
-        title: string;
-        file: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Leave empty to use this page’s own URL.
-     */
-    canonical?: string | null;
-    noindex?: boolean | null;
-  };
-  /**
-   * Leave empty to generate from the name. Changing it creates a 301 redirect automatically.
-   */
-  slug?: string | null;
-  category: number | ProductCategory;
-  /**
-   * Leave empty to show others from the same category.
-   */
-  relatedProducts?: (number | Product)[] | null;
-  hidden?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * Max 10 MB. Page images are converted to AVIF/WebP in several widths automatically.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Describe the image for search engines and screen readers. Required.
-   */
-  alt: string;
-  caption?: string | null;
-  prefix?: string | null;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * Drag rows to reorder. The order is used on Home and on the Products page.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-categories".
- */
-export interface ProductCategory {
-  id: number;
-  _order?: string | null;
-  /**
-   * 1–3 words.
-   */
-  name: string;
-  /**
-   * Shown at the top of the category page. 2–3 sentences.
-   */
-  description?: string | null;
-  /**
-   * Card and category hero image. Recommended 1200 px wide or more.
-   */
-  image: number | Media;
-  /**
-   * Picked from the site’s icon set.
-   */
-  icon:
-    | 'diamond'
-    | 'shield'
-    | 'leaf'
-    | 'flask'
-    | 'award'
-    | 'users'
-    | 'globe'
-    | 'factory'
-    | 'target'
-    | 'eye'
-    | 'check'
-    | 'truck';
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Leave empty to use this page’s own URL.
-     */
-    canonical?: string | null;
-    noindex?: boolean | null;
-  };
-  /**
-   * Leave empty to generate from the name. Changing it creates a 301 redirect automatically.
-   */
-  slug?: string | null;
-  /**
-   * The Home grid shows up to 5 categories.
-   */
-  showOnHome?: boolean | null;
-  hidden?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -451,102 +242,83 @@ export interface User {
   collection: 'users';
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partners".
- */
-export interface Partner {
-  id: number;
-  _order?: string | null;
-  name: string;
-  /**
-   * SVG or PNG. Shown in grayscale until hovered.
-   */
-  logo: number | Media;
-  type: number | PartnerType;
-  url?: string | null;
-  /**
-   * Optional, one line.
-   */
-  description?: string | null;
-  visible?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Groups on the Partners page. Drag to reorder.
+ * Drag rows to reorder. These are the cards on the Home page and the list in the footer. A card opens the quote form with the category filled in.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partner-types".
+ * via the `definition` "product-categories".
  */
-export interface PartnerType {
+export interface ProductCategory {
   id: number;
   _order?: string | null;
+  /**
+   * 1–3 words.
+   */
   name: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: number;
   /**
-   * 6–12 words.
+   * Card image. Recommended 1200 px wide or more.
    */
-  title: string;
+  image: number | Media;
   /**
-   * Shown on the news list. Up to 160 characters.
+   * Picked from the site’s icon set.
    */
-  excerpt?: string | null;
-  cover: number | Media;
-  body?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Leave empty to use this page’s own URL.
-     */
-    canonical?: string | null;
-    noindex?: boolean | null;
-  };
+  icon:
+    | 'diamond'
+    | 'shield'
+    | 'leaf'
+    | 'flask'
+    | 'award'
+    | 'users'
+    | 'globe'
+    | 'factory'
+    | 'target'
+    | 'eye'
+    | 'check'
+    | 'truck';
   /**
-   * Leave empty to generate from the title. Changing it creates a 301 redirect automatically.
+   * The Home grid shows up to 5 categories.
    */
-  slug?: string | null;
-  /**
-   * Draft, Scheduled or Published.
-   */
-  state?: string | null;
-  /**
-   * Pick a future date and press Publish to schedule this article.
-   */
-  publishedAt: string;
-  author?: string | null;
-  category?: string | null;
-  tags?: string[] | null;
-  relatedProducts?: (number | Product)[] | null;
+  showOnHome?: boolean | null;
+  hidden?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Max 10 MB. Page images are converted to AVIF/WebP in several widths automatically.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describe the image for search engines and screen readers. Required.
+   */
+  alt: string;
+  caption?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * Send old URLs to new ones. Changing a slug adds a row here automatically.
@@ -599,22 +371,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'product-categories';
         value: number | ProductCategory;
-      } | null)
-    | ({
-        relationTo: 'products';
-        value: number | Product;
-      } | null)
-    | ({
-        relationTo: 'partners';
-        value: number | Partner;
-      } | null)
-    | ({
-        relationTo: 'partner-types';
-        value: number | PartnerType;
-      } | null)
-    | ({
-        relationTo: 'news';
-        value: number | News;
       } | null)
     | ({
         relationTo: 'media';
@@ -685,7 +441,7 @@ export interface InquiriesSelect<T extends boolean = true> {
   phone?: T;
   country?: T;
   type?: T;
-  products?: T;
+  productInterest?: T;
   quantity?: T;
   message?: T;
   attachment?: T;
@@ -726,136 +482,10 @@ export interface InquiriesSelect<T extends boolean = true> {
 export interface ProductCategoriesSelect<T extends boolean = true> {
   _order?: T;
   name?: T;
-  description?: T;
   image?: T;
   icon?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  slug?: T;
   showOnHome?: T;
   hidden?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products_select".
- */
-export interface ProductsSelect<T extends boolean = true> {
-  name?: T;
-  casNumber?: T;
-  grade?: T;
-  synonyms?: T;
-  shortDescription?: T;
-  description?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
-  specs?:
-    | T
-    | {
-        property?: T;
-        value?: T;
-        unit?: T;
-        id?: T;
-      };
-  applications?:
-    | T
-    | {
-        label?: T;
-        id?: T;
-      };
-  packaging?:
-    | T
-    | {
-        label?: T;
-        id?: T;
-      };
-  documents?:
-    | T
-    | {
-        title?: T;
-        file?: T;
-        id?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  slug?: T;
-  category?: T;
-  relatedProducts?: T;
-  hidden?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partners_select".
- */
-export interface PartnersSelect<T extends boolean = true> {
-  _order?: T;
-  name?: T;
-  logo?: T;
-  type?: T;
-  url?: T;
-  description?: T;
-  visible?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partner-types_select".
- */
-export interface PartnerTypesSelect<T extends boolean = true> {
-  _order?: T;
-  name?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news_select".
- */
-export interface NewsSelect<T extends boolean = true> {
-  title?: T;
-  excerpt?: T;
-  cover?: T;
-  body?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  slug?: T;
-  state?: T;
-  publishedAt?: T;
-  author?: T;
-  category?: T;
-  tags?: T;
-  relatedProducts?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1012,12 +642,12 @@ export interface HomePage {
     text?: string | null;
     primaryLabel?: string | null;
     /**
-     * A page path such as /products, or a full URL.
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
      */
     primaryLink?: string | null;
     secondaryLabel?: string | null;
     /**
-     * A page path such as /products, or a full URL.
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
      */
     secondaryLink?: string | null;
     /**
@@ -1093,7 +723,7 @@ export interface HomePage {
     intro?: string | null;
     linkLabel?: string | null;
     /**
-     * A page path such as /products, or a full URL.
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
      */
     linkLink?: string | null;
   };
@@ -1112,7 +742,7 @@ export interface HomePage {
     text?: string | null;
     buttonLabel?: string | null;
     /**
-     * A page path such as /products, or a full URL.
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
      */
     buttonLink?: string | null;
     /**
@@ -1149,7 +779,7 @@ export interface HomePage {
     text?: string | null;
     buttonLabel?: string | null;
     /**
-     * A page path such as /products, or a full URL.
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
      */
     buttonLink?: string | null;
     /**
@@ -1157,10 +787,6 @@ export interface HomePage {
      */
     image?: (number | null) | Media;
   };
-  showPartnersStrip?: boolean | null;
-  partnersStripTitle?: string | null;
-  showLatestNews?: boolean | null;
-  latestNewsTitle?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1364,197 +990,7 @@ export interface AboutPage {
     text?: string | null;
     buttonLabel?: string | null;
     /**
-     * A page path such as /products, or a full URL.
-     */
-    buttonLink?: string | null;
-    /**
-     * Shown on the left, cut by the diagonal. Recommended 800 px wide or more.
-     */
-    image?: (number | null) | Media;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Leave empty to use this page’s own URL.
-     */
-    canonical?: string | null;
-    noindex?: boolean | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products-page".
- */
-export interface ProductsPage {
-  id: number;
-  hero: {
-    /**
-     * Small spaced-caps label above the title, 2–5 words.
-     */
-    eyebrow?: string | null;
-    /**
-     * Page title: 2–6 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
-     */
-    title: string;
-    /**
-     * 1–2 sentences.
-     */
-    intro?: string | null;
-    /**
-     * Recommended 1920 px wide or more. Cut by the diagonal mask automatically.
-     */
-    image?: (number | null) | Media;
-  };
-  labels?: {
-    productCountSingular?: string | null;
-    productCountPlural?: string | null;
-    requestQuote?: string | null;
-  };
-  cta: {
-    /**
-     * Small spaced-caps label above the title, 2–5 words.
-     */
-    eyebrow?: string | null;
-    /**
-     * Banner title: 6–10 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
-     */
-    title: string;
-    /**
-     * One or two short sentences.
-     */
-    text?: string | null;
-    buttonLabel?: string | null;
-    /**
-     * A page path such as /products, or a full URL.
-     */
-    buttonLink?: string | null;
-    /**
-     * Shown on the left, cut by the diagonal. Recommended 800 px wide or more.
-     */
-    image?: (number | null) | Media;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Leave empty to use this page’s own URL.
-     */
-    canonical?: string | null;
-    noindex?: boolean | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partners-page".
- */
-export interface PartnersPage {
-  id: number;
-  hero: {
-    /**
-     * Small spaced-caps label above the title, 2–5 words.
-     */
-    eyebrow?: string | null;
-    /**
-     * Page title: 2–6 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
-     */
-    title: string;
-    /**
-     * 1–2 sentences.
-     */
-    intro?: string | null;
-    /**
-     * Recommended 1920 px wide or more. Cut by the diagonal mask automatically.
-     */
-    image?: (number | null) | Media;
-  };
-  become: {
-    /**
-     * Small spaced-caps label above the title, 2–5 words.
-     */
-    eyebrow?: string | null;
-    /**
-     * Banner title: 3–8 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
-     */
-    title: string;
-    text?: string | null;
-    buttonLabel?: string | null;
-    /**
-     * Shown on the left, cut by the diagonal.
-     */
-    image?: (number | null) | Media;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Leave empty to use this page’s own URL.
-     */
-    canonical?: string | null;
-    noindex?: boolean | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news-page".
- */
-export interface NewsPage {
-  id: number;
-  hero: {
-    /**
-     * Small spaced-caps label above the title, 2–5 words.
-     */
-    eyebrow?: string | null;
-    /**
-     * Page title: 2–6 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
-     */
-    title: string;
-    /**
-     * 1–2 sentences.
-     */
-    intro?: string | null;
-    /**
-     * Recommended 1920 px wide or more. Cut by the diagonal mask automatically.
-     */
-    image?: (number | null) | Media;
-  };
-  cta: {
-    /**
-     * Small spaced-caps label above the title, 2–5 words.
-     */
-    eyebrow?: string | null;
-    /**
-     * Banner title: 6–10 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
-     */
-    title: string;
-    /**
-     * One or two short sentences.
-     */
-    text?: string | null;
-    buttonLabel?: string | null;
-    /**
-     * A page path such as /products, or a full URL.
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
      */
     buttonLink?: string | null;
     /**
@@ -1693,7 +1129,7 @@ export interface PrivacyPage {
 export interface Navigation {
   id: number;
   /**
-   * Drag to reorder. A link to /news stays hidden until 3 articles are published.
+   * Drag to reorder.
    */
   items?:
     | {
@@ -1855,10 +1291,6 @@ export interface HomePageSelect<T extends boolean = true> {
         buttonLink?: T;
         image?: T;
       };
-  showPartnersStrip?: T;
-  partnersStripTitle?: T;
-  showLatestNews?: T;
-  latestNewsTitle?: T;
   meta?:
     | T
     | {
@@ -1961,123 +1393,6 @@ export interface AboutPageSelect<T extends boolean = true> {
               label?: T;
               id?: T;
             };
-      };
-  cta?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        text?: T;
-        buttonLabel?: T;
-        buttonLink?: T;
-        image?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products-page_select".
- */
-export interface ProductsPageSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        intro?: T;
-        image?: T;
-      };
-  labels?:
-    | T
-    | {
-        productCountSingular?: T;
-        productCountPlural?: T;
-        requestQuote?: T;
-      };
-  cta?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        text?: T;
-        buttonLabel?: T;
-        buttonLink?: T;
-        image?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partners-page_select".
- */
-export interface PartnersPageSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        intro?: T;
-        image?: T;
-      };
-  become?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        text?: T;
-        buttonLabel?: T;
-        image?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news-page_select".
- */
-export interface NewsPageSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        eyebrow?: T;
-        title?: T;
-        intro?: T;
-        image?: T;
       };
   cta?:
     | T

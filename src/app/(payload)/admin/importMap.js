@@ -1,5 +1,8 @@
 import { InquiryContactActions as InquiryContactActions_114d3f0b9179c0b83ca61a398d030162 } from '../../../components/admin/InquiryContactActions'
 import { InquiryListActions as InquiryListActions_a1c4db9c751a030c07c45452f8f535cf } from '../../../components/admin/InquiryListActions'
+import { MediaSizeWarning as MediaSizeWarning_8f6d32858f5e31df264c16a95eff8a4b } from '../../../components/admin/MediaSizeWarning'
+import { MediaUsage as MediaUsage_37496de85f8616f72cf2999ceb1e940e } from '../../../components/admin/MediaUsage'
+import { CategoriesNote as CategoriesNote_41a8890ac8c5856538ce8d4838a61b62 } from '../../../components/admin/CategoriesNote'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -19,9 +22,6 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HeadingFeatureClient as HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { MediaSizeWarning as MediaSizeWarning_8f6d32858f5e31df264c16a95eff8a4b } from '../../../components/admin/MediaSizeWarning'
-import { MediaUsage as MediaUsage_37496de85f8616f72cf2999ceb1e940e } from '../../../components/admin/MediaUsage'
-import { CategoriesNote as CategoriesNote_41a8890ac8c5856538ce8d4838a61b62 } from '../../../components/admin/CategoriesNote'
 import { AdminIcon as AdminIcon_db845eae23ef682757f9df5d4893ae70 } from '../../../components/admin/AdminBrand'
 import { AdminLogo as AdminLogo_db845eae23ef682757f9df5d4893ae70 } from '../../../components/admin/AdminBrand'
 import { DashboardHome as DashboardHome_84cd845a8766cfd3c2cceae49d5dee3d } from '../../../components/admin/DashboardHome'
@@ -34,6 +34,9 @@ import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e
 export const importMap = {
   "/components/admin/InquiryContactActions#InquiryContactActions": InquiryContactActions_114d3f0b9179c0b83ca61a398d030162,
   "/components/admin/InquiryListActions#InquiryListActions": InquiryListActions_a1c4db9c751a030c07c45452f8f535cf,
+  "/components/admin/MediaSizeWarning#MediaSizeWarning": MediaSizeWarning_8f6d32858f5e31df264c16a95eff8a4b,
+  "/components/admin/MediaUsage#MediaUsage": MediaUsage_37496de85f8616f72cf2999ceb1e940e,
+  "/components/admin/CategoriesNote#CategoriesNote": CategoriesNote_41a8890ac8c5856538ce8d4838a61b62,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
@@ -53,9 +56,6 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HeadingFeatureClient": HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ParagraphFeatureClient": ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "/components/admin/MediaSizeWarning#MediaSizeWarning": MediaSizeWarning_8f6d32858f5e31df264c16a95eff8a4b,
-  "/components/admin/MediaUsage#MediaUsage": MediaUsage_37496de85f8616f72cf2999ceb1e940e,
-  "/components/admin/CategoriesNote#CategoriesNote": CategoriesNote_41a8890ac8c5856538ce8d4838a61b62,
   "/components/admin/AdminBrand#AdminIcon": AdminIcon_db845eae23ef682757f9df5d4893ae70,
   "/components/admin/AdminBrand#AdminLogo": AdminLogo_db845eae23ef682757f9df5d4893ae70,
   "/components/admin/DashboardHome#DashboardHome": DashboardHome_84cd845a8766cfd3c2cceae49d5dee3d,

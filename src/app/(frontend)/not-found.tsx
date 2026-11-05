@@ -15,7 +15,7 @@ export default function NotFound() {
         <h1 className="title">{t.notFoundTitle}</h1>
         <p className="lead">{t.notFoundText}</p>
         <div className="message-page__actions">
-          <Button href="/products">{t.browseProducts}</Button>
+          <Button href="/">{t.backHome}</Button>
           <Button href="/contact" variant="outline">
             {t.contactUs}
           </Button>

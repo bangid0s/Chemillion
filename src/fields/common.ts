@@ -1,4 +1,4 @@
-import type { Field, FieldHook, GroupField, SelectField } from 'payload'
+import type { Field, GroupField, SelectField } from 'payload'
 
 export const iconOptions = [
   'diamond',
@@ -58,7 +58,7 @@ export const buttonFields = (prefix: string, label: string): Field[] => [
         name: `${prefix}Link`,
         type: 'text',
         label: `${label} link`,
-        admin: { width: '50%', description: 'A page path such as /products, or a full URL.' },
+        admin: { width: '50%', description: 'A page path such as /about or /contact?origin=quote#inquiry, or a full URL.' },
       },
     ],
   },
@@ -93,33 +93,4 @@ export const statsField = (name = 'stats'): Field => ({
       ],
     },
   ],
-})
-
-export const toSlug = (value: string) =>
-  value
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-
-const formatSlug =
-  (source: string): FieldHook =>
-  ({ value, data, originalDoc }) => {
-    if (typeof value === 'string' && value.length) return toSlug(value)
-    const fromSource = data?.[source] ?? originalDoc?.[source]
-    return typeof fromSource === 'string' ? toSlug(fromSource) : value
-  }
-
-export const slugField = (source: string): Field => ({
-  name: 'slug',
-  type: 'text',
-  index: true,
-  unique: true,
-  localized: true,
-  admin: {
-    position: 'sidebar',
-    description: `Leave empty to generate from the ${source}. Changing it creates a 301 redirect automatically.`,
-  },
-  hooks: { beforeValidate: [formatSlug(source)] },
 })
