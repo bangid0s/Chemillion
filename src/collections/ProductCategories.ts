@@ -15,8 +15,8 @@ export const ProductCategories: CollectionConfig = {
     defaultColumns: ['name', 'showOnHome', 'hidden', '_status'],
     description:
       'Drag rows to reorder. These are the cards on the Home page and the list in the footer. A card opens the quote form with the category filled in.',
-    livePreview: { url: () => previewUrl('/') },
-    preview: () => previewUrl('/'),
+    livePreview: { url: ({ locale }) => previewUrl('/', locale) },
+    preview: (_doc, { locale }) => previewUrl('/', locale),
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   versions: { maxPerDoc: 20, drafts: { autosave: { interval: 1500 } } },

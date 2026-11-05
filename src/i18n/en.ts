@@ -1,5 +1,5 @@
-/** Interface strings. Page content lives in the dashboard; `id.ts` joins this file in phase 2. */
-export const t = {
+/** Interface strings in English. `id.ts` and `zh.ts` hold the same keys; page content lives in the dashboard. */
+export const en = {
   home: 'Home',
   menu: 'Menu',
   closeMenu: 'Close menu',
@@ -8,7 +8,6 @@ export const t = {
   requestQuote: 'Request a quote',
   language: 'Language',
   chooseLanguage: 'Choose a language',
-  translationNote: 'Other languages are translated automatically by Google Translate.',
   address: 'Address',
   phone: 'Phone',
   email: 'Email',
@@ -52,3 +51,5 @@ export const t = {
     honeypot: 'Leave this field empty',
   },
 }
+
+export type Dictionary = typeof en

@@ -51,11 +51,13 @@ export default buildConfig({
     ? postgresAdapter({ pool: { connectionString: databaseUri } })
     : sqliteAdapter({ client: { url: databaseUri } }),
   editor: richText(),
-  // Every field marked `localized` is stored per language; Indonesian is switched on in phase 2.
+  // Every field marked `localized` is written per language with the Locale menu at the top of the editor.
+  // A field left empty in Indonesian or Chinese shows its English text on the site until it is translated.
   localization: {
     locales: [
       { code: 'en', label: 'English' },
       { code: 'id', label: 'Bahasa Indonesia' },
+      { code: 'zh', label: 'Chinese (Simplified) 中文' },
     ],
     defaultLocale: 'en',
     fallback: true,

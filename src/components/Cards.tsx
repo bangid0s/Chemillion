@@ -1,11 +1,13 @@
-import Link from 'next/link'
+import { LocalLink as Link } from '@/components/LocaleProvider'
 import type { ProductCategory } from '@/payload-types'
 import { quoteHref } from '@/lib/cms'
-import { t } from '@/i18n/en'
+import { getT } from '@/i18n/server'
 import { Icon } from './Icon'
 import { CmsImage } from './ui'
 
-export const CategoryCard = ({ category }: { category: ProductCategory }) => (
+export const CategoryCard = async ({ category }: { category: ProductCategory }) => {
+  const t = await getT()
+  return (
   <Link href={quoteHref(category.name)} className="cat-card">
     <span className="cat-card__img">
       <CmsImage media={category.image} sizes="(max-width: 640px) 50vw, (max-width: 1023px) 33vw, 20vw" />
@@ -20,4 +22,5 @@ export const CategoryCard = ({ category }: { category: ProductCategory }) => (
       </span>
     </span>
   </Link>
-)
+  )
+}

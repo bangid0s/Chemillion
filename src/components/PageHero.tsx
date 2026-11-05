@@ -1,12 +1,13 @@
 import { breadcrumbLd } from '@/lib/jsonld'
-import { t } from '@/i18n/en'
-import Link from 'next/link'
+import { getT } from '@/i18n/server'
+import { LocalLink as Link } from '@/components/LocaleProvider'
 import { Icon } from './Icon'
 import { CmsImage, Headline, JsonLd } from './ui'
 
 export type Crumb = { label: string; href?: string }
 
-export const Breadcrumbs = ({ items }: { items: Crumb[] }) => {
+export const Breadcrumbs = async ({ items }: { items: Crumb[] }) => {
+  const t = await getT()
   const all: Crumb[] = [{ label: t.home, href: '/' }, ...items]
   return (
     <>

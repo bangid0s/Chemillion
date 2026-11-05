@@ -2,17 +2,18 @@ import type { Metadata, Viewport } from 'next'
 import { Montserrat, Red_Hat_Display } from 'next/font/google'
 import { draftMode } from 'next/headers'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
 import { Analytics } from '@/components/Analytics'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
+import { LocaleProvider } from '@/components/LocaleProvider'
 import { ShapeDefs } from '@/components/Shapes'
 import { JsonLd } from '@/components/ui'
-import { t } from '@/i18n/en'
+import { localeInfo, locales } from '@/i18n/config'
+import { currentLocale, getT } from '@/i18n/server'
 import { getSettings } from '@/lib/cms'
 import { organizationLd, websiteLd } from '@/lib/jsonld'
 import { siteUrl } from '@/lib/url'
-import './globals.css'
+import '../globals.css'
 
 // Only the dashboard's live preview needs this, so visitors never download it.
 const RefreshRouteOnSave = dynamic(() => import('@/components/RefreshRouteOnSave').then((m) => m.RefreshRouteOnSave))
@@ -32,31 +33,38 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// Every language is built ahead of time. The proxy sends unprefixed (English) paths here as /en.
+export const dynamicParams = false
+export const generateStaticParams = () => locales.map((lang) => ({ lang }))
+
 export const viewport: Viewport = {
   themeColor: '#0f6b70',
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const [settings, draft] = await Promise.all([getSettings(), draftMode()])
+  const [settings, draft, locale, t] = await Promise.all([getSettings(), draftMode(), currentLocale(), getT()])
   return (
-    <html lang="en" className={`${body.variable} ${heading.variable}`}>
+    <html lang={localeInfo[locale].htmlLang} className={`${body.variable} ${heading.variable}`}>
       <body>
-        <a href="#main" className="skip-link">
-          {t.skipToContent}
-        </a>
-        <ShapeDefs />
-        <Header />
-        {draft.isEnabled && (
-          <div className="preview-bar" role="status">
-            {t.previewBanner} <Link href="/preview/exit" prefetch={false}>{t.exitPreview}</Link>
-            <RefreshRouteOnSave />
-          </div>
-        )}
-        <main id="main">{children}</main>
-        <Footer />
-        <JsonLd data={organizationLd(settings)} />
-        <JsonLd data={websiteLd(settings)} />
-        {settings.gaId && <Analytics gaId={settings.gaId} />}
+        <LocaleProvider locale={locale}>
+          <a href="#main" className="skip-link">
+            {t.skipToContent}
+          </a>
+          <ShapeDefs />
+          <Header />
+          {draft.isEnabled && (
+            <div className="preview-bar" role="status">
+              {t.previewBanner}{' '}
+              <a href="/preview/exit">{t.exitPreview}</a>
+              <RefreshRouteOnSave />
+            </div>
+          )}
+          <main id="main">{children}</main>
+          <Footer />
+          <JsonLd data={organizationLd(settings)} />
+          <JsonLd data={websiteLd(settings)} />
+          {settings.gaId && <Analytics gaId={settings.gaId} />}
+        </LocaleProvider>
       </body>
     </html>
   )

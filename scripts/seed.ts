@@ -6,6 +6,7 @@ import path from 'path'
 import { getPayload } from 'payload'
 import config from '../src/payload.config'
 import { ADDRESS, MAP_EMBED_URL } from '../src/migrations/20261104_090000_company_address'
+import { translateNavigation } from '../src/migrations/20261105_160500_translate_navigation'
 
 const LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 const LOREM_SHORT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
@@ -270,6 +271,9 @@ const seed = async () => {
       retentionMonths: 24,
     },
   })
+
+  // Indonesian and Chinese menu labels; page content stays English until the team translates it.
+  await translateNavigation(payload)
 
   payload.logger.info('Seed complete.')
 }

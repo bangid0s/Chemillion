@@ -34,9 +34,13 @@ Edits save as drafts and only go live when you press **Publish changes**. Use th
 
 ## Languages
 
-The site is written in English. The globe button in the header offers Bahasa Indonesia, Chinese, Japanese, Korean, Malay, Thai and Vietnamese, translated live by Google Translate. Nothing needs translating in the dashboard. Google's script only loads after a visitor picks another language, and the choice is remembered on later visits. To change the list, edit `LANGUAGES` in `src/components/LanguageSwitcher.tsx` (Google's language codes).
+The site has three languages, each written by hand: English (the default, at `/about`), Bahasa Indonesia (`/id/about`) and Chinese (Simplified) (`/zh/about`). Visitors switch with the globe button in the header and land on the same page in the other language.
 
-The logo is never translated. To keep any other text in English, give its element `translate="no"`.
+- **Page content:** open any page, category or setting in the dashboard, pick the language in the **Locale** menu at the top right, type the translation and publish. A field left empty in Indonesian or Chinese shows the English text, so a page can be translated bit by bit.
+- **Buttons, form labels and messages** that are part of the site's code live in `src/i18n/en.ts`, `id.ts` and `zh.ts`.
+- Links you enter in the dashboard (such as `/about`) stay in the visitor's language automatically.
+- Search engines get one address per language, `hreflang` links between them, and all of them in `sitemap.xml`.
+- Inquiries record the visitor's language, and the auto-reply email uses that language's text from Site Settings.
 
 ## Removed sections
 
@@ -53,11 +57,12 @@ Products, Partners, News and Search were removed in November 2026. Their old URL
 ## Project layout
 
 ```
-src/app/(frontend)   Public pages, sitemap, inquiry endpoint
+src/app/(frontend)   Public pages (under [lang]), sitemap, inquiry endpoint
+src/proxy.ts         Language routing: / is English, /id and /zh the others
 src/app/(payload)    Dashboard and REST API
 src/collections      Inquiries, Product Categories and other content types
 src/globals          One structured editor per page, plus settings and navigation
 src/components       Site components; admin/ holds dashboard add-ons
-src/i18n             Interface strings (English)
+src/i18n             Languages and interface strings (English, Indonesian, Chinese)
 scripts              Seed and placeholder scripts
 ```

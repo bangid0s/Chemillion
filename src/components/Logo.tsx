@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { LocalLink as Link } from '@/components/LocaleProvider'
 import { CmsImage } from './ui'
 import { BrandMark } from './BrandMark'
 import { asMedia } from '@/lib/media'
@@ -7,7 +7,7 @@ import { asMedia } from '@/lib/media'
 export const Logo = ({ logo, className = '' }: { logo?: unknown; className?: string }) => {
   const file = asMedia(logo)
   return (
-    <Link href="/" className={`logo notranslate ${className}`} translate="no">
+    <Link href="/" className={`logo ${className}`} translate="no">
       {file ? (
         <CmsImage media={file} sizes="240px" fill={false} className="logo__img" />
       ) : (

@@ -1,9 +1,9 @@
-import { t } from '@/i18n/en'
+import { defaultLocale, isLocale, type Locale } from '@/i18n/config'
+import { getDictionary } from '@/i18n/dictionaries'
 import { getClient, getSettings } from '@/lib/cms'
 import { allowSubmission } from '@/lib/rateLimit'
 import { sniffFileType } from '@/lib/sniffFileType'
 
-const f = t.form
 const MIN_ELAPSED_MS = 3000
 const MAX_FILE = 5 * 1024 * 1024
 const ORIGINS = ['contact', 'quote', 'product', 'partner'] as const
@@ -35,6 +35,9 @@ export async function POST(request: Request) {
   }
 
   const str = (key: string, max = 300) => String(form.get(key) ?? '').trim().slice(0, max)
+  // The visitor's language: their error messages and auto-reply are in it, and the team sees it on the inquiry.
+  const language: Locale = isLocale(str('language', 5)) ? (str('language', 5) as Locale) : defaultLocale
+  const f = getDictionary(language).form
   // Only a header our own proxy overwrites can be trusted; the left of x-forwarded-for is whatever the client sent.
   const trusted = process.env.CLIENT_IP_HEADER
   const ip = (trusted ? request.headers.get(trusted) : request.headers.get('x-forwarded-for')?.split(',').at(-1))?.trim() || 'unknown'
@@ -100,7 +103,7 @@ export async function POST(request: Request) {
       status: 'new',
       formOrigin,
       sourceUrl: str('sourceUrl', 1000),
-      language: 'en',
+      language,
       ip,
       utm: { source: str('utm_source'), medium: str('utm_medium'), campaign: str('utm_campaign') },
     },
@@ -108,7 +111,7 @@ export async function POST(request: Request) {
 
   // The inquiry is safely stored, so an email failure must not lose it or fail the visitor.
   try {
-    const settings = await getSettings()
+    const settings = await getSettings(language)
     const to = settings.notificationEmails?.map((n) => n.email) ?? []
     if (to.length) {
       await payload.sendEmail({

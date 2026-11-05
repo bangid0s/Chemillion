@@ -4,7 +4,7 @@ import { InquiryForm } from '@/components/InquiryForm'
 import { MapEmbed } from '@/components/MapEmbed'
 import { PageHero } from '@/components/PageHero'
 import { CmsImage, JsonLd, SectionHead, plainHeadline } from '@/components/ui'
-import { t } from '@/i18n/en'
+import { getT } from '@/i18n/server'
 import { getGlobal, getSettings } from '@/lib/cms'
 import { localBusinessLd } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const [page, settings] = await Promise.all([getContent(), getSettings()])
+  const [page, settings, t] = await Promise.all([getContent(), getSettings(), getT()])
   const { form, office } = page
 
   return (

@@ -1,6 +1,6 @@
 import { getGlobal, getSettings } from '@/lib/cms'
 import type { Navigation } from '@/payload-types'
-import { t } from '@/i18n/en'
+import { getT } from '@/i18n/server'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { Logo } from './Logo'
 import { MobileMenu, NavLinks } from './HeaderClient'
@@ -15,7 +15,7 @@ export const getNavItems = async () => {
 }
 
 export const Header = async () => {
-  const [{ nav, items }, settings] = await Promise.all([getNavItems(), getSettings()])
+  const [{ nav, items }, settings, t] = await Promise.all([getNavItems(), getSettings(), getT()])
   const ctaLabel = nav.ctaLabel ?? ''
   const ctaLink = nav.ctaLink ?? '/contact'
 

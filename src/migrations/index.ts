@@ -1,6 +1,8 @@
 import * as migration_20261104_025313_initial from './20261104_025313_initial';
 import * as migration_20261104_090000_company_address from './20261104_090000_company_address';
 import * as migration_20261105_093751_remove_catalogue from './20261105_093751_remove_catalogue';
+import * as migration_20261105_160136_add_chinese_locale from './20261105_160136_add_chinese_locale';
+import * as migration_20261105_160500_translate_navigation from './20261105_160500_translate_navigation';
 
 export const migrations = [
   {
@@ -16,6 +18,16 @@ export const migrations = [
   {
     up: migration_20261105_093751_remove_catalogue.up,
     down: migration_20261105_093751_remove_catalogue.down,
-    name: '20261105_093751_remove_catalogue'
+    name: '20261105_093751_remove_catalogue',
+  },
+  {
+    up: migration_20261105_160136_add_chinese_locale.up,
+    down: migration_20261105_160136_add_chinese_locale.down,
+    name: '20261105_160136_add_chinese_locale'
+  },
+  {
+    up: migration_20261105_160500_translate_navigation.up,
+    down: migration_20261105_160500_translate_navigation.down,
+    name: '20261105_160500_translate_navigation'
   },
 ];

@@ -2,19 +2,22 @@ import config from '@payload-config'
 import { draftMode } from 'next/headers'
 import { getPayload, type GlobalSlug, type Where } from 'payload'
 import { cache } from 'react'
+import type { Locale } from '@/i18n/config'
+import { currentLocale } from '@/i18n/server'
 import type { HomePage, SiteSetting } from '@/payload-types'
 
 export const getClient = cache(() => getPayload({ config }))
 
 const isDraft = async () => (await draftMode()).isEnabled
 
-export const getGlobal = cache(async (slug: GlobalSlug) => {
+/** Content in the page's language. Fields not translated yet fall back to English (see `localization` in the config). */
+export const getGlobal = cache(async (slug: GlobalSlug, locale?: Locale) => {
   const payload = await getClient()
-  return payload.findGlobal({ slug, depth: 2, draft: await isDraft() })
+  return payload.findGlobal({ slug, depth: 2, draft: await isDraft(), locale: locale ?? (await currentLocale()) })
 })
 
 export const getHome = async () => (await getGlobal('home-page')) as HomePage
-export const getSettings = async () => (await getGlobal('site-settings')) as SiteSetting
+export const getSettings = async (locale?: Locale) => (await getGlobal('site-settings', locale)) as SiteSetting
 
 /** Hidden items never show; drafts only show in the dashboard's preview. */
 const visible = async (extra?: Where): Promise<Where> => {
@@ -33,6 +36,7 @@ export const getCategories = cache(async () => {
     limit: 100,
     depth: 1,
     draft: await isDraft(),
+    locale: await currentLocale(),
   })
   return docs
 })
