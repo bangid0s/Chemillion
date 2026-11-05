@@ -24,13 +24,23 @@ To reinstall dependencies, use Node 22 or newer. If your system Node is older, p
 | --- | --- |
 | Any page's text and images | **Pages** |
 | Teal words in a headline | Wrap them in `*asterisks*` in the headline field |
-| Product categories and products | **Catalogue** |
-| Partners, news, images | **Partners**, **Content** |
+| Product category cards (Home page and footer) | **Content → Product Categories** |
+| Images | **Content → Media Library** |
 | Form submissions, CSV export | **Sales → Inquiries** |
 | Menu, footer titles | **Settings → Navigation** |
 | Logo, contact details, notification emails, analytics, redirects | **Settings** (admins only) |
 
 Edits save as drafts and only go live when you press **Publish changes**. Use the eye icon for a live preview, and **Versions** to restore an earlier version.
+
+## Languages
+
+The site is written in English. The globe button in the header offers Bahasa Indonesia, Chinese, Japanese, Korean, Malay, Thai and Vietnamese, translated live by Google Translate. Nothing needs translating in the dashboard. Google's script only loads after a visitor picks another language, and the choice is remembered on later visits. To change the list, edit `LANGUAGES` in `src/components/LanguageSwitcher.tsx` (Google's language codes).
+
+The logo is never translated. To keep any other text in English, give its element `translate="no"`.
+
+## Removed sections
+
+Products, Partners, News and Search were removed in November 2026. Their old URLs redirect (`next.config.mjs`): `/products` to the Home page's category cards, product pages to the quote form, `/partners` to About, and `/news` and `/search` to Home. Inquiries that had picked products keep those product names in **Product(s) of interest**.
 
 ## Going live
 
@@ -45,9 +55,9 @@ Edits save as drafts and only go live when you press **Publish changes**. Use th
 ```
 src/app/(frontend)   Public pages, sitemap, inquiry endpoint
 src/app/(payload)    Dashboard and REST API
-src/collections      Products, News, Inquiries and other content types
+src/collections      Inquiries, Product Categories and other content types
 src/globals          One structured editor per page, plus settings and navigation
 src/components       Site components; admin/ holds dashboard add-ons
-src/i18n             Interface strings, ready for Indonesian in phase 2
+src/i18n             Interface strings (English)
 scripts              Seed and placeholder scripts
 ```

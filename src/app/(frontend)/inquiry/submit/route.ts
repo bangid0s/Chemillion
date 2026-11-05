@@ -25,7 +25,7 @@ const verifyTurnstile = async (token: string, ip: string) => {
   }
 }
 
-/** The one form behind Contact, Get a Quote, Request a Quote and Become a Partner. Saved first, emailed second. */
+/** The one form behind Contact, Get a Quote and the Home page's category cards. Saved first, emailed second. */
 export async function POST(request: Request) {
   let form: FormData
   try {
@@ -70,20 +70,6 @@ export async function POST(request: Request) {
   const payload = await getClient()
   const originValue = str('formOrigin')
   const formOrigin: Origin = (ORIGINS as readonly string[]).includes(originValue) ? (originValue as Origin) : 'contact'
-  const requestedIds = form.getAll('products').map((v) => Number(v)).filter((v) => Number.isInteger(v)).slice(0, 50)
-  // An id deleted since the page loaded would fail validation and lose the whole inquiry, so keep only live products.
-  const productIds = requestedIds.length
-    ? (
-        await payload.find({
-          collection: 'products',
-          where: { id: { in: requestedIds }, _status: { equals: 'published' }, hidden: { not_equals: true } },
-          limit: requestedIds.length,
-          depth: 0,
-          select: {},
-        })
-      ).docs.map((p) => p.id)
-    : []
-
   // A rejected file must never cost us the inquiry itself, so it only leaves a note for the team.
   let attachmentId: number | undefined
   let attachmentProblem = false
@@ -105,7 +91,7 @@ export async function POST(request: Request) {
       phone: `${str('dialCode', 6)} ${str('phone')}`.trim(),
       country: str('country'),
       type: str('type'),
-      products: productIds,
+      productInterest: str('interest'),
       quantity: str('quantity'),
       message,
       attachment: attachmentId,
@@ -137,6 +123,7 @@ export async function POST(request: Request) {
           `Country: ${inquiry.country}`,
           `Type: ${inquiry.type}`,
           `Origin: ${inquiry.formOrigin}`,
+          `Product(s) of interest: ${inquiry.productInterest ?? ''}`,
           `Quantity: ${inquiry.quantity}`,
           '',
           inquiry.message,

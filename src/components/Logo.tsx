@@ -7,7 +7,7 @@ import { asMedia } from '@/lib/media'
 export const Logo = ({ logo, className = '' }: { logo?: unknown; className?: string }) => {
   const file = asMedia(logo)
   return (
-    <Link href="/" className={`logo ${className}`}>
+    <Link href="/" className={`logo notranslate ${className}`} translate="no">
       {file ? (
         <CmsImage media={file} sizes="240px" fill={false} className="logo__img" />
       ) : (

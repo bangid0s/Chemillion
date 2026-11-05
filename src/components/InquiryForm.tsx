@@ -1,16 +1,13 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { countries, dialCodes } from '@/i18n/countries'
 import { t } from '@/i18n/en'
 import { Icon } from './Icon'
 import { track } from './Analytics'
 
-type ProductOption = { id: string | number; name: string; slug: string }
-
 type Props = {
-  products: ProductOption[]
   inquiryTypes: string[]
   turnstileSiteKey?: string
   thankYouTitle?: string | null
@@ -59,31 +56,29 @@ const Field = ({
   </div>
 )
 
-export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYouTitle, thankYouText }: Props) => {
+export const InquiryForm = ({ inquiryTypes, turnstileSiteKey, thankYouTitle, thankYouText }: Props) => {
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle')
   const [serverError, setServerError] = useState('')
-  const [selected, setSelected] = useState<(string | number)[]>([])
+  const [interest, setInterest] = useState('')
   const [origin, setOrigin] = useState('contact')
   const [utm, setUtm] = useState<Record<string, string>>({})
   const startedAt = useRef(Date.now())
   const started = useRef(false)
-  const productMenu = useRef<HTMLDetailsElement>(null)
 
-  // Quote buttons across the site arrive here with ?origin=&product=, which fills in the form.
+  // Quote buttons across the site arrive here with ?origin=&interest=, which fills in the form.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const fromOrigin = params.get('origin')
     if (fromOrigin && ['contact', 'quote', 'product', 'partner'].includes(fromOrigin)) setOrigin(fromOrigin)
-    const productSlug = params.get('product')
-    const match = products.find((p) => p.slug === productSlug)
-    if (match) setSelected([match.id])
+    const fromInterest = params.get('interest')?.trim().slice(0, 300)
+    if (fromInterest) setInterest(fromInterest)
     setUtm({
       source: params.get('utm_source') ?? '',
       medium: params.get('utm_medium') ?? '',
       campaign: params.get('utm_campaign') ?? '',
     })
-  }, [products])
+  }, [])
 
   // The form only takes quote requests for now, so every inquiry is filed under the quote type.
   const type = inquiryTypes.find((o) => /quote/i.test(o)) ?? inquiryTypes[0] ?? 'Product quote'
@@ -96,11 +91,6 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
     document.body.appendChild(script)
     return () => script.remove()
   }, [turnstileSiteKey])
-
-  const selectedNames = useMemo(
-    () => products.filter((p) => selected.includes(p.id)).map((p) => p.name),
-    [products, selected],
-  )
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -117,7 +107,6 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
     data.set('elapsed', String(Date.now() - startedAt.current))
     data.set('sourceUrl', window.location.href)
     data.set('formOrigin', origin)
-    selected.forEach((id) => data.append('products', String(id)))
     Object.entries(utm).forEach(([k, v]) => data.set(`utm_${k}`, v))
     try {
       const res = await fetch('/inquiry/submit', { method: 'POST', body: data })
@@ -186,33 +175,18 @@ export const InquiryForm = ({ products, inquiryTypes, turnstileSiteKey, thankYou
             <input id="phone" name="phone" type="tel" autoComplete="tel-national" required {...describe('phone')} />
           </div>
         </Field>
-        <div className="field form-grid__full">
-          <span className="field__label" id="products-label">
-            {f.products}
-          </span>
-          <details className="multi" ref={productMenu}>
-            <summary aria-labelledby="products-label">
-              {selectedNames.length === 0
-                ? f.productsPlaceholder
-                : selectedNames.length === 1
-                  ? selectedNames[0]
-                  : `${selectedNames.length} ${f.productsSelected}`}
-            </summary>
-            <div className="multi__list">
-              {products.map((p) => (
-                <label key={p.id}>
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(p.id)}
-                    onChange={(e) =>
-                      setSelected((prev) => (e.target.checked ? [...prev, p.id] : prev.filter((id) => id !== p.id)))
-                    }
-                  />
-                  {p.name}
-                </label>
-              ))}
-            </div>
-          </details>
+        <div className="form-grid__full">
+          <Field name="interest" label={f.products}>
+            <input
+              id="interest"
+              name="interest"
+              type="text"
+              maxLength={300}
+              placeholder={f.productsPlaceholder}
+              value={interest}
+              onChange={(e) => setInterest(e.target.value)}
+            />
+          </Field>
         </div>
         <Field name="quantity" label={f.quantity}>
           <input id="quantity" name="quantity" type="text" placeholder={f.quantityPlaceholder} />

@@ -1,49 +1,33 @@
 import type { CollectionConfig } from 'payload'
 import { isStaff, publishedOrStaff } from '../access'
-import { iconField, imageField, slugField } from '../fields/common'
+import { iconField, imageField } from '../fields/common'
 import { revalidateAfterDelete, revalidateCollection } from '../hooks/revalidate'
-import { slugRedirect } from '../hooks/slugRedirect'
 import { previewUrl } from '../lib/preview'
 
+/** The cards in the Home page's product section and the footer's product list. There are no product pages. */
 export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
   labels: { singular: 'Product Category', plural: 'Product Categories' },
   orderable: true,
   admin: {
-    group: 'Catalogue',
+    group: 'Content',
     useAsTitle: 'name',
     defaultColumns: ['name', 'showOnHome', 'hidden', '_status'],
-    description: 'Drag rows to reorder. The order is used on Home and on the Products page.',
-    livePreview: { url: ({ data }) => previewUrl(`/products/${data?.slug}`) },
-    preview: (data) => previewUrl(`/products/${data?.slug}`),
+    description:
+      'Drag rows to reorder. These are the cards on the Home page and the list in the footer. A card opens the quote form with the category filled in.',
+    livePreview: { url: () => previewUrl('/') },
+    preview: () => previewUrl('/'),
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   versions: { maxPerDoc: 20, drafts: { autosave: { interval: 1500 } } },
   hooks: {
-    afterChange: [slugRedirect((doc) => `/products/${doc.slug}`), revalidateCollection],
+    afterChange: [revalidateCollection],
     afterDelete: [revalidateAfterDelete],
   },
   fields: [
-    {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            { name: 'name', type: 'text', required: true, localized: true, admin: { description: '1–3 words.' } },
-            {
-              name: 'description',
-              type: 'textarea',
-              localized: true,
-              admin: { description: 'Shown at the top of the category page. 2–3 sentences.' },
-            },
-            imageField('image', 'Card and category hero image. Recommended 1200 px wide or more.', true),
-            iconField(),
-          ],
-        },
-      ],
-    },
-    slugField('name'),
+    { name: 'name', type: 'text', required: true, localized: true, admin: { description: '1–3 words.' } },
+    imageField('image', 'Card image. Recommended 1200 px wide or more.', true),
+    iconField(),
     {
       name: 'showOnHome',
       type: 'checkbox',

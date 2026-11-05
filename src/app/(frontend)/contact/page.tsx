@@ -5,7 +5,7 @@ import { MapEmbed } from '@/components/MapEmbed'
 import { PageHero } from '@/components/PageHero'
 import { CmsImage, JsonLd, SectionHead, plainHeadline } from '@/components/ui'
 import { t } from '@/i18n/en'
-import { getAllProducts, getGlobal, getSettings } from '@/lib/cms'
+import { getGlobal, getSettings } from '@/lib/cms'
 import { localBusinessLd } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
 import type { ContactPage as Content } from '@/payload-types'
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const [page, settings, products] = await Promise.all([getContent(), getSettings(), getAllProducts()])
+  const [page, settings] = await Promise.all([getContent(), getSettings()])
   const { form, office } = page
 
   return (
@@ -38,7 +38,6 @@ export default async function ContactPage() {
             <SectionHead eyebrow={form?.eyebrow} title={form?.title} />
             {form?.text && <p className="lead">{form.text}</p>}
             <InquiryForm
-              products={products.map((p) => ({ id: p.id, name: p.name, slug: p.slug as string }))}
               inquiryTypes={settings.inquiryTypes?.map((i) => i.label) ?? []}
               turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || undefined}
               thankYouTitle={form?.thankYouTitle}

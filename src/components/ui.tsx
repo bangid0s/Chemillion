@@ -103,6 +103,3 @@ export const SectionHead = ({
 export const JsonLd = ({ data }: { data: unknown }) => (
   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }} />
 )
-
-export const formatDate = (date?: string | null) =>
-  date ? new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : ''
