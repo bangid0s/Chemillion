@@ -402,7 +402,7 @@ a:hover .round-arrow {
   gap: calc(15 * var(--u));
   margin-left: auto;
 }
-/* Language picker. Other languages are Google Translate's live translation of the English page. */
+/* Language picker. Each language is its own set of pages: /, /id and /zh. */
 .lang {
   position: relative;
 }
@@ -453,60 +453,29 @@ a:hover .round-arrow {
   display: grid;
   gap: 2px;
 }
-.lang__menu button {
+.lang__menu a {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   min-height: 40px;
   padding: 0 10px;
-  border: 0;
   border-radius: 8px;
-  background: none;
   color: var(--ink);
-  font: inherit;
   font-size: 14px;
-  text-align: left;
-  cursor: pointer;
 }
-.lang__menu button:hover,
-.lang__menu button:focus-visible {
+.lang__menu a:hover,
+.lang__menu a:focus-visible {
   background: var(--icon-bg);
 }
-.lang__menu button[aria-current='true'] {
+.lang__menu a[aria-current='true'] {
   color: var(--teal);
   font-weight: 600;
 }
-.lang__menu button svg {
+.lang__menu a svg {
   width: 16px;
   height: 16px;
   stroke-width: 2.4;
-}
-.lang__note {
-  margin: 8px 8px 4px;
-  padding-top: 8px;
-  border-top: 1px solid var(--line);
-  color: var(--text-soft);
-  font-size: 11.5px;
-  line-height: 1.45;
-}
-/* Google's own toolbar, tooltips and highlights would cover the header, so they stay hidden. */
-body {
-  top: 0 !important;
-}
-body > .skiptranslate,
-.goog-te-banner-frame,
-.goog-te-balloon-frame,
-#goog-gt-tt,
-.goog-tooltip,
-.VIpgJd-ZVi9od-ORHb-OEVmcd,
-.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
-.VIpgJd-yAWNEb-L7lbkb {
-  display: none !important;
-}
-.goog-text-highlight {
-  background: none !important;
-  box-shadow: none !important;
 }
 .lang__toggle svg {
   width: calc(14 * var(--u));
@@ -3199,4 +3168,13 @@ body {
     line-height: 1.5;
     white-space: normal;
   }
+}
+
+/* Chinese pages: the brand fonts have no Han characters, so the system's Chinese font takes over for them. */
+:lang(zh) {
+  --font-heading-stack: var(--font-heading), 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  --font-body-stack: var(--font-body), 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+}
+:lang(zh) .eyebrow {
+  letter-spacing: 0.12em;
 }

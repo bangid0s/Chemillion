@@ -1,12 +1,12 @@
-import Link from 'next/link'
+import { LocalLink as Link } from '@/components/LocaleProvider'
 import { getCategories, getSettings, quoteHref } from '@/lib/cms'
-import { t } from '@/i18n/en'
+import { getT } from '@/i18n/server'
 import { getNavItems } from './Header'
 import { Icon } from './Icon'
 import { Logo } from './Logo'
 
 export const Footer = async () => {
-  const [{ nav, items }, settings, categories] = await Promise.all([getNavItems(), getSettings(), getCategories()])
+  const [{ nav, items }, settings, categories, t] = await Promise.all([getNavItems(), getSettings(), getCategories(), getT()])
   const copyright = (settings.copyright ?? '').replace('{year}', String(new Date().getFullYear()))
 
   return (

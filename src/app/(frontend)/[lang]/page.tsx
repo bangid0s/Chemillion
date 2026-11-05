@@ -8,7 +8,7 @@ import { Stats } from '@/components/Stats'
 import { Button, CmsImage, Headline, SectionHead } from '@/components/ui'
 import { getCategories, getHome, getSettings } from '@/lib/cms'
 import { buildMetadata } from '@/lib/seo'
-import Link from 'next/link'
+import { LocalLink as Link } from '@/components/LocaleProvider'
 import { plainHeadline } from '@/components/ui'
 
 const MAX_HOME_CATEGORIES = 5

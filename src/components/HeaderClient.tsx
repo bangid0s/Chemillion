@@ -1,14 +1,17 @@
 'use client'
 
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { t } from '@/i18n/en'
+import { stripLocale } from '@/i18n/config'
+import { LocalLink as Link, useT } from './LocaleProvider'
 import { Icon } from './Icon'
 
 type Item = { label: string; link: string }
 
-const isActive = (pathname: string, link: string) => pathname === link || pathname.startsWith(`${link}/`)
+const isActive = (pathname: string, link: string) => {
+  const here = stripLocale(pathname)
+  return here === link || here.startsWith(`${link}/`)
+}
 
 export const NavLinks = ({ items }: { items: Item[] }) => {
   const pathname = usePathname()
@@ -26,6 +29,7 @@ export const NavLinks = ({ items }: { items: Item[] }) => {
 }
 
 export const MobileMenu = ({ items, ctaLabel, ctaLink }: { items: Item[]; ctaLabel: string; ctaLink: string }) => {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
   const toggle = useRef<HTMLButtonElement>(null)

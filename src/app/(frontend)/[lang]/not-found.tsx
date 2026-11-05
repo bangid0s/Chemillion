@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import { Button } from '@/components/ui'
-import { t } from '@/i18n/en'
+import { getT } from '@/i18n/server'
 
-export const metadata: Metadata = {
-  title: t.notFoundTitle,
-  robots: { index: false, follow: true },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT()
+  return { title: t.notFoundTitle, robots: { index: false, follow: true } }
 }
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getT()
   return (
     <section className="section message-page">
       <div className="container container--narrow">

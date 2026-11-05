@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Link from 'next/link'
+import { LocalLink as Link } from '@/components/LocaleProvider'
 import type { Media } from '@/payload-types'
 import { asMedia } from '@/lib/media'
 import { Icon } from './Icon'

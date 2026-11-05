@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import { countries, dialCodes } from '@/i18n/countries'
-import { t } from '@/i18n/en'
+import { localizeHref } from '@/i18n/config'
+import { LocalLink as Link, useLocale, useT } from './LocaleProvider'
+import type { Dictionary } from '@/i18n/dictionaries'
 import { Icon } from './Icon'
 import { track } from './Analytics'
 
@@ -16,9 +17,7 @@ type Props = {
 
 type Errors = Record<string, string>
 
-const f = t.form
-
-const validate = (data: FormData): Errors => {
+const validate = (data: FormData, f: Dictionary['form']): Errors => {
   const errors: Errors = {}
   const str = (key: string) => String(data.get(key) ?? '').trim()
   for (const key of ['name', 'company', 'phone', 'type']) if (!str(key)) errors[key] = f.required
@@ -57,6 +56,9 @@ const Field = ({
 )
 
 export const InquiryForm = ({ inquiryTypes, turnstileSiteKey, thankYouTitle, thankYouText }: Props) => {
+  const t = useT()
+  const f = t.form
+  const locale = useLocale()
   const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle')
   const [serverError, setServerError] = useState('')
@@ -96,7 +98,7 @@ export const InquiryForm = ({ inquiryTypes, turnstileSiteKey, thankYouTitle, tha
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
-    const found = validate(data)
+    const found = validate(data, f)
     setErrors(found)
     setServerError('')
     if (Object.keys(found).length) {
@@ -107,13 +109,14 @@ export const InquiryForm = ({ inquiryTypes, turnstileSiteKey, thankYouTitle, tha
     data.set('elapsed', String(Date.now() - startedAt.current))
     data.set('sourceUrl', window.location.href)
     data.set('formOrigin', origin)
+    data.set('language', locale)
     Object.entries(utm).forEach(([k, v]) => data.set(`utm_${k}`, v))
     try {
       const res = await fetch('/inquiry/submit', { method: 'POST', body: data })
       if (res.ok) {
         setStatus('done')
         track('form_submit', { form_origin: origin })
-        window.history.pushState({}, '', '/thank-you')
+        window.history.pushState({}, '', localizeHref('/thank-you', locale))
         window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120 })
         return
       }

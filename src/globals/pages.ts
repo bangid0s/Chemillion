@@ -11,8 +11,8 @@ const page = (slug: string, label: string, path: string, tabs: { label: string; 
   label,
   admin: {
     group: 'Pages',
-    livePreview: { url: () => previewUrl(path) },
-    preview: () => previewUrl(path),
+    livePreview: { url: ({ locale }) => previewUrl(path, locale) },
+    preview: (_doc, { locale }) => previewUrl(path, locale),
   },
   // The site reads these server-side with full access; public REST reads would expose `?draft=true` content.
   access: { read: isStaff, update: isStaff },

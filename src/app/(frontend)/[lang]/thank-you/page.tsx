@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 import { Icon } from '@/components/Icon'
 import { Button } from '@/components/ui'
-import { t } from '@/i18n/en'
+import { getT } from '@/i18n/server'
 import { getGlobal } from '@/lib/cms'
 import type { ContactPage } from '@/payload-types'
 
-export const metadata: Metadata = {
-  title: t.thankYouTitle,
-  robots: { index: false, follow: false },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT()
+  return { title: t.thankYouTitle, robots: { index: false, follow: false } }
 }
 
 export default async function ThankYouPage() {
-  const page = (await getGlobal('contact-page')) as ContactPage
+  const [page, t] = await Promise.all([getGlobal('contact-page') as Promise<ContactPage>, getT()])
   return (
     <section className="section message-page">
       <div className="container container--narrow">

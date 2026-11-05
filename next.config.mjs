@@ -2,17 +2,14 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
-const translate = 'https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com'
-
 const csp = [
   "default-src 'self'",
-  // Google Translate's hosts only come into play once a visitor picks a language other than English.
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ''}https://challenges.cloudflare.com https://www.googletagmanager.com ${translate}`,
-  `style-src 'self' 'unsafe-inline' ${translate}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ''}https://challenges.cloudflare.com https://www.googletagmanager.com`,
+  "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  `connect-src 'self' https://www.google-analytics.com https://challenges.cloudflare.com ${translate}`,
-  `frame-src 'self' https://www.google.com https://maps.google.com https://challenges.cloudflare.com ${translate}`,
+  "connect-src 'self' https://www.google-analytics.com https://challenges.cloudflare.com",
+  'frame-src https://www.google.com https://maps.google.com https://challenges.cloudflare.com',
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",
