@@ -19,6 +19,7 @@ const ORIGIN_LABEL: Record<string, string> = { contact: 'Contact', quote: 'Get a
 const PAGES = [
   { slug: 'home-page', label: 'Home' },
   { slug: 'about-page', label: 'About Us' },
+  { slug: 'solutions-page', label: 'Solutions' },
   { slug: 'contact-page', label: 'Contact' },
   { slug: 'privacy-page', label: 'Privacy Policy' },
 ] as const
@@ -335,7 +336,7 @@ export const DashboardHome = async ({ payload, user }: { payload: Payload; user?
             <div className="ch-quick">
               <Link href="/admin/collections/product-categories">
                 <Icon name="box" />
-                Product categories
+                Solutions
               </Link>
               <Link href="/admin/collections/media/create">
                 <Icon name="image" />

@@ -1,5 +1,5 @@
 import { LocalLink as Link } from '@/components/LocaleProvider'
-import { getCategories, getSettings, quoteHref } from '@/lib/cms'
+import { getCategories, getSettings, solutionHref } from '@/lib/cms'
 import { getT } from '@/i18n/server'
 import { getNavItems } from './Header'
 import { Icon } from './Icon'
@@ -20,7 +20,9 @@ export const Footer = async () => {
             <li>
               <Link href="/">{t.home}</Link>
             </li>
-            {items.map((item) => (
+            {items
+              .filter((item) => item.link !== '/')
+              .map((item) => (
               <li key={item.link}>
                 <Link href={item.link}>{item.label}</Link>
               </li>
@@ -33,7 +35,7 @@ export const Footer = async () => {
           <ul>
             {categories.slice(0, 5).map((c) => (
               <li key={c.id}>
-                <Link href={quoteHref(c.name)}>{c.name}</Link>
+                <Link href={solutionHref(c)}>{c.name}</Link>
               </li>
             ))}
           </ul>

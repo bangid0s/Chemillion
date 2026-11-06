@@ -4,19 +4,22 @@ import { iconField, imageField } from '../fields/common'
 import { revalidateAfterDelete, revalidateCollection } from '../hooks/revalidate'
 import { previewUrl } from '../lib/preview'
 
-/** The cards in the Home page's product section and the footer's product list. There are no product pages. */
+/**
+ * The solutions: the cards in the Home page's solutions section, the Solutions page and the footer's list.
+ * The slug stays `product-categories` so existing data keeps its tables.
+ */
 export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
-  labels: { singular: 'Product Category', plural: 'Product Categories' },
+  labels: { singular: 'Solution', plural: 'Solutions' },
   orderable: true,
   admin: {
     group: 'Content',
     useAsTitle: 'name',
     defaultColumns: ['name', 'showOnHome', 'hidden', '_status'],
     description:
-      'Drag rows to reorder. These are the cards on the Home page and the list in the footer. A card opens the quote form with the category filled in.',
-    livePreview: { url: ({ locale }) => previewUrl('/', locale) },
-    preview: (_doc, { locale }) => previewUrl('/', locale),
+      'Drag rows to reorder. Each solution is a card on the Home page, a section on the Solutions page and a link in the footer.',
+    livePreview: { url: ({ locale }) => previewUrl('/solutions', locale) },
+    preview: (_doc, { locale }) => previewUrl('/solutions', locale),
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   versions: { maxPerDoc: 20, drafts: { autosave: { interval: 1500 } } },
@@ -25,8 +28,26 @@ export const ProductCategories: CollectionConfig = {
     afterDelete: [revalidateAfterDelete],
   },
   fields: [
-    { name: 'name', type: 'text', required: true, localized: true, admin: { description: '1–3 words.' } },
-    imageField('image', 'Card image. Recommended 1200 px wide or more.', true),
+    { name: 'name', type: 'text', required: true, localized: true, admin: { description: '2–4 words.' } },
+    {
+      name: 'summary',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'One sentence under the name on the Home page card.' },
+    },
+    {
+      name: 'applications',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Solutions page: where it is used. One or two sentences.' },
+    },
+    {
+      name: 'benefits',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Solutions page: what it does for the customer. One or two sentences.' },
+    },
+    imageField('image', 'Card and Solutions page image. Recommended 1200 px wide or more.', true),
     iconField(),
     {
       name: 'showOnHome',

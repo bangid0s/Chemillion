@@ -8,7 +8,7 @@ export const revalidate = 300
 /** Every page in every language, each listing its other-language versions. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString()
-  return ['/', '/about', '/contact', '/privacy'].flatMap((path) =>
+  return ['/', '/about', '/solutions', '/contact', '/privacy'].flatMap((path) =>
     locales.map((locale) => ({
       url: absoluteUrl(localizeHref(path, locale)),
       lastModified: now,

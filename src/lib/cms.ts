@@ -41,7 +41,11 @@ export const getCategories = cache(async () => {
   return docs
 })
 
-/** Category cards open the quote form with the category already filled in. */
+/** Each solution's section on the Solutions page. */
+export const solutionAnchor = (solution: { id: number | string }) => `solution-${solution.id}`
+export const solutionHref = (solution: { id: number | string }) => `/solutions#${solutionAnchor(solution)}`
+
+/** Quote buttons open the form with the solution already filled in. */
 export const quoteHref = (interest?: string | null) =>
   `/contact?origin=quote${interest ? `&interest=${encodeURIComponent(interest)}` : ''}#inquiry`
 

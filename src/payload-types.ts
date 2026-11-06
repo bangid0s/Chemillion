@@ -98,6 +98,7 @@ export interface Config {
   globals: {
     'home-page': HomePage;
     'about-page': AboutPage;
+    'solutions-page': SolutionsPage;
     'contact-page': ContactPage;
     'privacy-page': PrivacyPage;
     navigation: Navigation;
@@ -106,6 +107,7 @@ export interface Config {
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'solutions-page': SolutionsPageSelect<false> | SolutionsPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'privacy-page': PrivacyPageSelect<false> | PrivacyPageSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
@@ -242,7 +244,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * Drag rows to reorder. These are the cards on the Home page and the list in the footer. A card opens the quote form with the category filled in.
+ * Drag rows to reorder. Each solution is a card on the Home page, a section on the Solutions page and a link in the footer.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "product-categories".
@@ -251,11 +253,23 @@ export interface ProductCategory {
   id: number;
   _order?: string | null;
   /**
-   * 1–3 words.
+   * 2–4 words.
    */
   name: string;
   /**
-   * Card image. Recommended 1200 px wide or more.
+   * One sentence under the name on the Home page card.
+   */
+  summary?: string | null;
+  /**
+   * Solutions page: where it is used. One or two sentences.
+   */
+  applications?: string | null;
+  /**
+   * Solutions page: what it does for the customer. One or two sentences.
+   */
+  benefits?: string | null;
+  /**
+   * Card and Solutions page image. Recommended 1200 px wide or more.
    */
   image: number | Media;
   /**
@@ -482,6 +496,9 @@ export interface InquiriesSelect<T extends boolean = true> {
 export interface ProductCategoriesSelect<T extends boolean = true> {
   _order?: T;
   name?: T;
+  summary?: T;
+  applications?: T;
+  benefits?: T;
   image?: T;
   icon?: T;
   showOnHome?: T;
@@ -1017,6 +1034,73 @@ export interface AboutPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "solutions-page".
+ */
+export interface SolutionsPage {
+  id: number;
+  hero: {
+    /**
+     * Small spaced-caps label above the title, 2–5 words.
+     */
+    eyebrow?: string | null;
+    /**
+     * Page title: 2–6 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
+     */
+    title: string;
+    /**
+     * 1–2 sentences.
+     */
+    intro?: string | null;
+    /**
+     * Recommended 1920 px wide or more. Cut by the diagonal mask automatically.
+     */
+    image?: (number | null) | Media;
+  };
+  list?: {
+    buttonLabel?: string | null;
+  };
+  cta: {
+    /**
+     * Small spaced-caps label above the title, 2–5 words.
+     */
+    eyebrow?: string | null;
+    /**
+     * Banner title: 6–10 words. Wrap words in *asterisks* to show them in teal. Press Enter for a new line.
+     */
+    title: string;
+    /**
+     * One or two short sentences.
+     */
+    text?: string | null;
+    buttonLabel?: string | null;
+    /**
+     * A page path such as /about or /contact?origin=quote#inquiry, or a full URL.
+     */
+    buttonLink?: string | null;
+    /**
+     * Shown on the left, cut by the diagonal. Recommended 800 px wide or more.
+     */
+    image?: (number | null) | Media;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Leave empty to use this page’s own URL.
+     */
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-page".
  */
 export interface ContactPage {
@@ -1393,6 +1477,48 @@ export interface AboutPageSelect<T extends boolean = true> {
               label?: T;
               id?: T;
             };
+      };
+  cta?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        text?: T;
+        buttonLabel?: T;
+        buttonLink?: T;
+        image?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "solutions-page_select".
+ */
+export interface SolutionsPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        intro?: T;
+        image?: T;
+      };
+  list?:
+    | T
+    | {
+        buttonLabel?: T;
       };
   cta?:
     | T
