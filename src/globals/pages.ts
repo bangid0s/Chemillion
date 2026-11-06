@@ -69,7 +69,7 @@ const HomePage = page('home-page', 'Home', '/', [
     ],
   },
   {
-    label: 'Product categories',
+    label: 'Solutions',
     name: 'categories',
     fields: [
       eyebrowField(),
@@ -187,6 +187,23 @@ const AboutPage = page('about-page', 'About Us', '/about', [
   { label: 'CTA banner', fields: [ctaBannerGroup()] },
 ])
 
+const SolutionsPage = page('solutions-page', 'Solutions', '/solutions', [
+  { label: 'Hero', name: 'hero', fields: pageHero() },
+  {
+    label: 'Solutions',
+    name: 'list',
+    fields: [
+      {
+        name: 'note',
+        type: 'ui',
+        admin: { components: { Field: '/components/admin/CategoriesNote#CategoriesNote' } },
+      },
+      { name: 'buttonLabel', type: 'text', localized: true, label: 'Quote button label', defaultValue: 'Request a Quote' },
+    ],
+  },
+  { label: 'CTA banner', fields: [ctaBannerGroup()] },
+])
+
 const ContactPage = page('contact-page', 'Contact', '/contact', [
   { label: 'Hero', name: 'hero', fields: pageHero() },
   {
@@ -221,4 +238,4 @@ const PrivacyPage = page('privacy-page', 'Privacy Policy', '/privacy', [
   },
 ])
 
-export const pageGlobals: GlobalConfig[] = [HomePage, AboutPage, ContactPage, PrivacyPage]
+export const pageGlobals: GlobalConfig[] = [HomePage, AboutPage, SolutionsPage, ContactPage, PrivacyPage]

@@ -6,45 +6,15 @@ import path from 'path'
 import { getPayload } from 'payload'
 import config from '../src/payload.config'
 import { ADDRESS, MAP_EMBED_URL } from '../src/migrations/20261104_090000_company_address'
-import { translateNavigation } from '../src/migrations/20261105_160500_translate_navigation'
+import { applyWebsiteCopy } from '../src/content/websiteCopy'
+import { richText } from '../src/lib/lexical'
 
 const LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 const LOREM_SHORT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 const LOREM_LONG = `${LOREM} Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`
 const LOREM_MORE = `Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
 
-/** Minimal Lexical document: strings become paragraphs, `## x` a heading. */
-const rich = (...blocks: string[]) => ({
-  root: {
-    type: 'root',
-    format: '' as const,
-    indent: 0,
-    version: 1,
-    direction: 'ltr' as const,
-    children: blocks.map((block) => {
-      const heading = block.startsWith('## ')
-      return {
-        type: heading ? 'heading' : 'paragraph',
-        ...(heading ? { tag: 'h2' } : { textFormat: 0, textStyle: '' }),
-        format: '' as const,
-        indent: 0,
-        version: 1,
-        direction: 'ltr' as const,
-        children: [
-          {
-            type: 'text',
-            text: heading ? block.slice(3) : block,
-            format: 0,
-            mode: 'normal',
-            style: '',
-            detail: 0,
-            version: 1,
-          },
-        ],
-      }
-    }),
-  },
-})
+const rich = richText
 
 const seed = async () => {
   const email = process.env.SEED_ADMIN_EMAIL
@@ -86,11 +56,9 @@ const seed = async () => {
   const mapImage = await image('map.png', 'Map showing the Chemillion office location')
 
   const categorySeeds = [
-    ['Industrial Chemicals', 'industrial-chemicals', 'Blue liquid in laboratory flasks', 'factory'],
-    ['Specialty Chemicals', 'specialty-chemicals', 'Red liquid in glass beakers', 'flask'],
-    ['Raw Materials', 'raw-materials', 'White powder in a glass dish', 'diamond'],
-    ['Laboratory Reagents', 'laboratory-reagents', 'Teal liquid in rows of test tubes', 'target'],
-    ['Other Products', 'other-products', 'Blue chemical drums stacked on warehouse racks', 'truck'],
+    ['Printing Ink Solvents', 'industrial-chemicals', 'Blue liquid in laboratory flasks', 'flask'],
+    ['Paint & Coating Solvents', 'specialty-chemicals', 'Red liquid in glass beakers', 'diamond'],
+    ['Technical Grade Chemicals', 'raw-materials', 'White powder in a glass dish', 'factory'],
   ] as const
 
   const categoryImages: number[] = []
@@ -194,8 +162,8 @@ const seed = async () => {
         title: 'Our *Facilities*',
         images: [
           { image: facility, caption: 'Lorem ipsum dolor' },
-          { image: categoryImages[4], caption: 'Sit amet consectetur' },
-          { image: categoryImages[3], caption: 'Adipiscing elit' },
+          { image: await image('other-products.jpg', 'Blue chemical drums stacked on warehouse racks'), caption: 'Sit amet consectetur' },
+          { image: await image('laboratory-reagents.jpg', 'Teal liquid in rows of test tubes'), caption: 'Adipiscing elit' },
         ],
       },
       statsBlock: {
@@ -272,8 +240,8 @@ const seed = async () => {
     },
   })
 
-  // Indonesian and Chinese menu labels; page content stays English until the team translates it.
-  await translateNavigation(payload)
+  // The approved website copy in English, Indonesian and Chinese replaces the placeholders above.
+  await applyWebsiteCopy(payload)
 
   payload.logger.info('Seed complete.')
 }

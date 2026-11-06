@@ -24,7 +24,7 @@ To reinstall dependencies, use Node 22 or newer. If your system Node is older, p
 | --- | --- |
 | Any page's text and images | **Pages** |
 | Teal words in a headline | Wrap them in `*asterisks*` in the headline field |
-| Product category cards (Home page and footer) | **Content → Product Categories** |
+| Solutions (Home cards, Solutions page, footer list) | **Content → Solutions** |
 | Images | **Content → Media Library** |
 | Form submissions, CSV export | **Sales → Inquiries** |
 | Menu, footer titles | **Settings → Navigation** |
@@ -41,6 +41,10 @@ The site has three languages, each written by hand: English (the default, at `/a
 - Links you enter in the dashboard (such as `/about`) stay in the visitor's language automatically.
 - Search engines get one address per language, `hreflang` links between them, and all of them in `sitemap.xml`.
 - Inquiries record the visitor's language, and the auto-reply email uses that language's text from Site Settings.
+
+## Website copy
+
+The approved copy (Home, About, Solutions, Contact, menu, footer, office hours, email and auto-reply in all three languages) lives in `src/content/websiteCopy.ts`. The `website_copy` migration writes it into the dashboard once, and `npm run seed` uses it for fresh installs. After that the dashboard is the place to edit it.
 
 ## Removed sections
 

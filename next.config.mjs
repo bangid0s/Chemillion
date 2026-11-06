@@ -27,11 +27,11 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
     localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/_next/static/**' }],
   },
-  // Products, Partners, News and Search were removed. Old links and search results land on the closest page instead of a 404.
+  // Products, Partners, News and Search were removed; Solutions replaced Products. Old links land on the closest page instead of a 404.
   async redirects() {
     return [
-      { source: '/products', destination: '/#products', permanent: true },
-      { source: '/products/:path*', destination: '/contact?origin=quote#inquiry', permanent: true },
+      { source: '/products', destination: '/solutions', permanent: true },
+      { source: '/products/:path*', destination: '/solutions', permanent: true },
       { source: '/partners', destination: '/about', permanent: true },
       { source: '/news', destination: '/', permanent: true },
       { source: '/news/:path*', destination: '/', permanent: true },

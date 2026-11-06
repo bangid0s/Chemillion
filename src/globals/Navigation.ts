@@ -34,7 +34,7 @@ export const Navigation: GlobalConfig = {
       ],
     },
     { name: 'quickLinksTitle', type: 'text', localized: true, label: 'Footer: Quick Links title' },
-    { name: 'productsTitle', type: 'text', localized: true, label: 'Footer: Product categories title' },
+    { name: 'productsTitle', type: 'text', localized: true, label: 'Footer: Solutions title' },
     { name: 'contactTitle', type: 'text', localized: true, label: 'Footer: Contact title' },
   ],
 }

@@ -3178,3 +3178,96 @@ body {
 :lang(zh) .eyebrow {
   letter-spacing: 0.12em;
 }
+
+/* Home: three solutions get three wider cards with a one-line summary instead of five narrow ones. */
+.cats__grid--3,
+.cats__grid--4 {
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+}
+.cats__grid--4 {
+  --cols: 4;
+}
+.cats__grid--3 .cat-card__img,
+.cats__grid--4 .cat-card__img {
+  height: calc(150 * var(--u));
+}
+.cat-card__name small {
+  line-height: 1.45;
+}
+.cats:has(.cats__grid--3) {
+  height: auto;
+  padding-bottom: calc(36 * var(--u));
+}
+@media (max-width: 1023px) {
+  .cats__grid--3 .cat-card__img,
+  .cats__grid--4 .cat-card__img {
+    height: auto;
+  }
+}
+
+/* Solutions page: one section per solution, image and text swapping sides down the page. */
+.solution {
+  scroll-margin-top: 84px;
+}
+.solution .title {
+  margin-top: calc(6 * var(--u));
+}
+.solution__facts {
+  display: grid;
+  gap: calc(16 * var(--u));
+  margin-top: calc(18 * var(--u));
+}
+.solution__facts dt {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  color: var(--ink);
+  font-family: var(--font-heading-stack);
+  font-size: calc(12.5 * var(--u));
+  font-weight: 700;
+}
+.solution__facts dd {
+  margin: calc(6 * var(--u)) 0 0 calc(46 * var(--u));
+  font-size: calc(11.5 * var(--u));
+  line-height: 1.6;
+}
+.solution__btn {
+  margin-top: calc(22 * var(--u));
+}
+@media (min-width: 768px) {
+  .split--flip > :first-child {
+    order: 2;
+  }
+  .split--flip .split__media {
+    clip-path: polygon(22% 0, 100% 0, 100% 100%, 20% 100%, 0 50%);
+  }
+}
+@media (max-width: 1023px) {
+  .solution__facts {
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .solution__facts dt {
+    gap: 10px;
+    font-size: 16px;
+  }
+  .solution__facts dd {
+    margin: 6px 0 0 46px;
+    font-size: 15px;
+  }
+  .solution__btn {
+    margin-top: 22px;
+  }
+}
+
+/* About: the mission card lists its points on separate lines. */
+.card p {
+  white-space: pre-line;
+}
+
+/* Indonesian menu labels are longer; tighter spacing keeps them clear of the language and quote buttons. */
+@media (min-width: 1024px) {
+  :lang(id) .nav-links {
+    gap: calc(18 * var(--u));
+  }
+}

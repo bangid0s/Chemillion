@@ -12,12 +12,13 @@ const refersTo = (node: unknown, id: unknown, key?: string): boolean => {
 }
 
 const COLLECTIONS: { slug: CollectionSlug; label: string; title: string }[] = [
-  { slug: 'product-categories', label: 'Category', title: 'name' },
+  { slug: 'product-categories', label: 'Solution', title: 'name' },
 ]
 
 const GLOBALS: { slug: GlobalSlug; label: string }[] = [
   { slug: 'home-page', label: 'Home' },
   { slug: 'about-page', label: 'About Us' },
+  { slug: 'solutions-page', label: 'Solutions page' },
   { slug: 'privacy-page', label: 'Privacy Policy' },
   { slug: 'contact-page', label: 'Contact page' },
   { slug: 'site-settings', label: 'Site Settings' },

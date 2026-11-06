@@ -58,9 +58,9 @@ export default async function HomePage() {
           </h1>
           {hero?.text && <p className="hero__text">{hero.text}</p>}
           <div className="hero__buttons">
-            {hero?.primaryLabel && <Button href={hero.primaryLink || '/#products'}>{hero.primaryLabel}</Button>}
+            {hero?.primaryLabel && <Button href={hero.primaryLink || '/contact'}>{hero.primaryLabel}</Button>}
             {hero?.secondaryLabel && (
-              <Button href={hero.secondaryLink || '/about'} variant="outline">
+              <Button href={hero.secondaryLink || '/solutions'} variant="outline">
                 {hero.secondaryLabel}
               </Button>
             )}
@@ -84,7 +84,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="cats" id="products">
+      <section className="cats" id="solutions">
         <div className="cats__inner">
           <div className="cats__head">
             <div className="cats__title">
@@ -92,13 +92,13 @@ export default async function HomePage() {
             </div>
             {catSection?.intro && <p className="cats__intro">{catSection.intro}</p>}
             {catSection?.linkLabel && (
-              <Link href={catSection.linkLink || '/contact?origin=quote#inquiry'} className="link-arrow cats__link">
+              <Link href={catSection.linkLink || '/solutions'} className="link-arrow cats__link">
                 {catSection.linkLabel}
                 <Icon name="arrow" />
               </Link>
             )}
           </div>
-          <div className="cats__grid">
+          <div className={`cats__grid cats__grid--${Math.min(homeCategories.length, 5)}`}>
             {homeCategories.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}
