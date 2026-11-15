@@ -5,6 +5,7 @@ import * as migration_20261105_160136_add_chinese_locale from './20261105_160136
 import * as migration_20261105_160500_translate_navigation from './20261105_160500_translate_navigation';
 import * as migration_20261106_032120_solutions from './20261106_032120_solutions';
 import * as migration_20261106_033000_website_copy from './20261106_033000_website_copy';
+import * as migration_20261115_090000_company_photos from './20261115_090000_company_photos';
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20261106_033000_website_copy.up,
     down: migration_20261106_033000_website_copy.down,
     name: '20261106_033000_website_copy'
+  },
+  {
+    up: migration_20261115_090000_company_photos.up,
+    down: migration_20261115_090000_company_photos.down,
+    name: '20261115_090000_company_photos'
   },
 ];
