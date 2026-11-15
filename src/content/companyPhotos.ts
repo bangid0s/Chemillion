@@ -186,6 +186,7 @@ const findPhotoDocs = async (payload: Payload, file: string) => {
 /** Uploads each photo once; a photo already in the Media Library is reused. */
 const upload = async (payload: Payload): Promise<Ids> => {
   const ids = {} as Ids
+  let created = 0
   for (const [key, photo] of Object.entries(PHOTOS) as [Key, Photo][]) {
     let id = (await findPhotoDocs(payload, photo.file))[0]?.id
     if (!id) {
@@ -197,12 +198,15 @@ const upload = async (payload: Payload): Promise<Ids> => {
         context: { disableRevalidate: true },
       })
       id = doc.id
+      created++
     }
     for (const locale of LOCALES.filter((l) => l !== 'en')) {
       await payload.update({ collection: 'media', id, locale, data: { alt: photo.alt[locale] }, context: { disableRevalidate: true } })
     }
     ids[key] = id
   }
+  const total = Object.keys(PHOTOS).length
+  payload.logger.info(`Company photos: ${created} uploaded, ${total - created} already in the Media Library, ${total} in total.`)
   return ids
 }
 
@@ -265,5 +269,5 @@ export const applyCompanyPhotos = async (payload: Payload, req?: Req) => {
     })
   }
 
-  payload.logger.info('Company photos: uploaded 16 photos and placed them on Home, About, Solutions, Contact and the solution cards.')
+  payload.logger.info('Company photos: placed on Home, About, Solutions, Contact and the solution cards.')
 }
