@@ -43,7 +43,11 @@ type CmsImageProps = {
   quality?: 75 | 85
 }
 
-/** Next/Image serves AVIF/WebP in several widths; the admin's focal point keeps the subject inside masks and crops. */
+/**
+ * Next/Image serves AVIF/WebP in several widths; the admin's focal point keeps the subject inside masks and crops.
+ * `priority` is for the one image a visitor sees first (the hero): it is preloaded from the <head> and fetched ahead of
+ * fonts and scripts, which is what makes the page look loaded sooner. Every other image loads lazily as it scrolls in.
+ */
 export const CmsImage = ({ media, sizes, className, priority, fill = true, width, height, quality }: CmsImageProps) => {
   const file = asMedia(media) as Media | null
   if (!file?.url) return null
@@ -57,7 +61,8 @@ export const CmsImage = ({ media, sizes, className, priority, fill = true, width
       alt={file.alt}
       sizes={sizes}
       className={className}
-      priority={priority}
+      preload={priority}
+      fetchPriority={priority ? 'high' : undefined}
       quality={quality}
       unoptimized={isSvg}
       style={position ? { objectPosition: position } : undefined}

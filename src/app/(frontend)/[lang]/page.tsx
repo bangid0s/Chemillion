@@ -34,7 +34,7 @@ export default async function HomePage() {
     <>
       <section className="hero">
         <div className="hero__visual">
-          <CmsImage media={hero?.image} priority quality={85} sizes="(max-width: 1023px) 100vw, 62vw" className="hero__img" />
+          <CmsImage media={hero?.image} priority sizes="(max-width: 1023px) 100vw, 62vw" className="hero__img" />
           <HeroOverlay />
           <BrandMark className="hero__mark" />
           {!!hero?.badgeLines?.length && (

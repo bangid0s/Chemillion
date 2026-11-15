@@ -18,6 +18,8 @@ const csp = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  // The stylesheet arrives inside the HTML instead of as a second, render-blocking request: first visits paint sooner.
+  experimental: { inlineCss: true },
   devIndicators: false,
   images: {
     formats: ['image/avif', 'image/webp'],
