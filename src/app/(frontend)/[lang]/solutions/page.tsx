@@ -34,7 +34,7 @@ export default async function SolutionsPage() {
         <section key={solution.id} id={solutionAnchor(solution)} className={`section solution${i % 2 ? ' section--grey' : ''}`}>
           <div className={`container split${i % 2 ? ' split--flip' : ''}`}>
             <div className="split__media">
-              <CmsImage media={solution.image} sizes="(max-width: 1023px) 100vw, 45vw" />
+              <CmsImage media={solution.image} eager={i === 0} sizes="(max-width: 1023px) 100vw, 45vw" />
             </div>
             <div>
               <p className="eyebrow">{String(i + 1).padStart(2, '0')}</p>

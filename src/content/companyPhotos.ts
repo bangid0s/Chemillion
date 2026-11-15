@@ -17,7 +17,7 @@ type Photo = { file: string; alt: Alt; focalX?: number; focalY?: number }
 
 const PHOTOS = {
   building: {
-    file: 'chemillion-office-warehouse-semarang.webp',
+    file: 'chemillion-office-warehouse-semarang.jpg',
     alt: {
       en: 'Chemillion office and warehouse building in Kawasan Industri Candi, Semarang, with a delivery truck at the front',
       id: 'Gedung kantor dan gudang Chemillion di Kawasan Industri Candi, Semarang, dengan truk pengiriman di depan',
@@ -25,7 +25,7 @@ const PHOTOS = {
     },
   },
   reception: {
-    file: 'chemillion-office-reception-semarang.webp',
+    file: 'chemillion-office-reception-semarang.jpg',
     alt: {
       en: 'Reception corner of the Chemillion office in Semarang',
       id: 'Sudut resepsionis kantor Chemillion di Semarang',
@@ -33,7 +33,7 @@ const PHOTOS = {
     },
   },
   hazardStorage: {
-    file: 'solvent-drum-storage-hazard-labels.webp',
+    file: 'solvent-drum-storage-hazard-labels.jpg',
     alt: {
       en: 'Solvent drums with hazard labels stored inside yellow-marked zones in the Chemillion warehouse',
       id: 'Drum pelarut berlabel bahaya tersimpan di zona bergaris kuning gudang Chemillion',
@@ -41,7 +41,7 @@ const PHOTOS = {
     },
   },
   warehouseForklift: {
-    file: 'chemical-drum-warehouse-forklift.webp',
+    file: 'chemical-drum-warehouse-forklift.jpg',
     alt: {
       en: 'Chemical drums on pallets along the main aisle of the Chemillion warehouse, with a forklift',
       id: 'Drum bahan kimia di atas palet sepanjang lorong utama gudang Chemillion, dengan forklift',
@@ -49,7 +49,7 @@ const PHOTOS = {
     },
   },
   staff: {
-    file: 'warehouse-staff-handling-solvent-drum.webp',
+    file: 'warehouse-staff-handling-solvent-drum.jpg',
     alt: {
       en: 'Chemillion warehouse staff moving a solvent drum, with a forklift ready behind',
       id: 'Staf gudang Chemillion memindahkan drum pelarut, dengan forklift siap di belakang',
@@ -58,7 +58,7 @@ const PHOTOS = {
     focalX: 38,
   },
   indoorStorage: {
-    file: 'technical-grade-chemical-drums-jerrycans-storage.webp',
+    file: 'technical-grade-chemical-drums-jerrycans-storage.jpg',
     alt: {
       en: 'Technical grade chemicals in steel drums and jerrycans in an indoor storage room',
       id: 'Bahan kimia technical grade dalam drum baja dan jeriken di ruang penyimpanan dalam',
@@ -66,7 +66,7 @@ const PHOTOS = {
     },
   },
   aisle: {
-    file: 'industrial-solvent-warehouse-aisle.webp',
+    file: 'industrial-solvent-warehouse-aisle.jpg',
     alt: {
       en: 'Long aisle of the industrial solvent warehouse with drums stored on both sides',
       id: 'Lorong panjang gudang pelarut industri dengan drum tersimpan di kedua sisi',
@@ -74,7 +74,7 @@ const PHOTOS = {
     },
   },
   warehouse: {
-    file: 'industrial-solvent-chemical-warehouse-semarang.webp',
+    file: 'industrial-solvent-chemical-warehouse-semarang.jpg',
     alt: {
       en: 'Industrial solvent and chemical warehouse of Chemillion in Semarang, with drums stored in marked zones',
       id: 'Gudang pelarut dan bahan kimia industri Chemillion di Semarang, dengan drum tersimpan di zona bertanda',
@@ -82,7 +82,7 @@ const PHOTOS = {
     },
   },
   office: {
-    file: 'chemillion-office-interior.webp',
+    file: 'chemillion-office-interior.jpg',
     alt: {
       en: 'Inside the Chemillion office, where the sales and administration team work',
       id: 'Bagian dalam kantor Chemillion, tempat tim penjualan dan administrasi bekerja',
@@ -90,7 +90,7 @@ const PHOTOS = {
     },
   },
   forklift: {
-    file: 'forklift-moving-chemical-drum.webp',
+    file: 'forklift-moving-chemical-drum.jpg',
     alt: {
       en: 'Forklift carrying a chemical drum across the Chemillion warehouse floor',
       id: 'Forklift mengangkut drum bahan kimia di lantai gudang Chemillion',
@@ -99,7 +99,7 @@ const PHOTOS = {
     focalX: 45,
   },
   stackedDrums: {
-    file: 'stacked-solvent-drums-on-pallets.webp',
+    file: 'stacked-solvent-drums-on-pallets.jpg',
     alt: {
       en: 'Solvent drums of several colours stacked on wooden pallets',
       id: 'Drum pelarut berbagai warna tersusun di atas palet kayu',
@@ -107,7 +107,7 @@ const PHOTOS = {
     },
   },
   palletisedDrums: {
-    file: 'palletised-solvent-drum-storage.webp',
+    file: 'palletised-solvent-drum-storage.jpg',
     alt: {
       en: 'Solvent drums stored two high on wooden pallets',
       id: 'Drum pelarut tersimpan dua tingkat di atas palet kayu',
@@ -115,7 +115,7 @@ const PHOTOS = {
     },
   },
   staging: {
-    file: 'drum-and-pallet-staging-area.webp',
+    file: 'drum-and-pallet-staging-area.jpg',
     alt: {
       en: 'Drum and pallet staging area in the Chemillion warehouse, below the office windows',
       id: 'Area persiapan drum dan palet di gudang Chemillion, di bawah jendela kantor',
@@ -123,7 +123,7 @@ const PHOTOS = {
     },
   },
   ghsDrums: {
-    file: 'hazardous-chemical-drums-ghs-labels.webp',
+    file: 'hazardous-chemical-drums-ghs-labels.jpg',
     alt: {
       en: 'Chemical drums with GHS hazard labels in covered storage',
       id: 'Drum bahan kimia berlabel bahaya GHS di area penyimpanan beratap',
@@ -131,7 +131,7 @@ const PHOTOS = {
     },
   },
   loadingArea: {
-    file: 'chemillion-warehouse-building-loading-area.webp',
+    file: 'chemillion-warehouse-building-loading-area.jpg',
     alt: {
       en: 'Front of the Chemillion warehouse with its paved loading area',
       id: 'Bagian depan gudang Chemillion dengan area muat berpaving',
@@ -139,7 +139,7 @@ const PHOTOS = {
     },
   },
   coveredStorage: {
-    file: 'industrial-solvent-drums-covered-storage.webp',
+    file: 'industrial-solvent-drums-covered-storage.jpg',
     alt: {
       en: 'Industrial solvent drums on plastic pallets in covered outdoor storage',
       id: 'Drum pelarut industri di atas palet plastik di area penyimpanan luar beratap',
@@ -166,15 +166,24 @@ const SOLUTION_PHOTOS: Key[] = ['coveredStorage', 'warehouseForklift', 'indoorSt
 
 const DIR = path.resolve(process.cwd(), 'src', 'content', 'photos')
 
-/** Cloud storage adds a random suffix, so `office.webp` is stored as `office-AbC123.webp` (sometimes several suffixes). */
+/** The file name without its extension, e.g. `office` for `office.jpg`. */
+const stemOf = (file: string) => file.replace(/\.[a-z]+$/i, '')
+
+/**
+ * Cloud storage adds a random suffix, so `office.jpg` is stored as `office-AbC123.jpg` (sometimes several suffixes).
+ * Earlier uploads of the same photo were WebP, so either extension counts as the same photo.
+ */
 const isStoredAs = (stored: string | null | undefined, file: string) => {
   if (!stored) return false
-  const stem = file.replace(/\.webp$/, '')
-  return stored === file || (stored.startsWith(`${stem}-`) && stored.endsWith('.webp') && /^[-A-Za-z0-9]+$/.test(stored.slice(stem.length + 1, -5)))
+  const stem = stemOf(file)
+  const match = stored.match(/^(.*)\.(jpe?g|webp)$/i)
+  if (!match) return false
+  const name = match[1]
+  return name === stem || (name.startsWith(`${stem}-`) && /^[-A-Za-z0-9]+$/.test(name.slice(stem.length + 1)))
 }
 
 const findPhotoDocs = async (payload: Payload, file: string) => {
-  const { docs } = await payload.find({ collection: 'media', where: { filename: { like: file.replace(/\.webp$/, '') } }, limit: 50, depth: 0, pagination: false })
+  const { docs } = await payload.find({ collection: 'media', where: { filename: { like: stemOf(file) } }, limit: 50, depth: 0, pagination: false })
   return docs.filter((doc) => isStoredAs(doc.filename, file))
 }
 
