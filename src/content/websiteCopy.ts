@@ -10,9 +10,9 @@ import type { ProductCategory } from '../payload-types'
  * Images, links that point elsewhere, statistics, certifications and facility photos are left as they are.
  */
 
-type Locale = 'en' | 'id' | 'zh'
+export type Locale = 'en' | 'id' | 'zh'
 type Copy = Record<string, unknown>
-type PerLocale = Record<Locale, Copy>
+export type PerLocale = Record<Locale, Copy>
 
 const QUOTE_LINK = '/contact?origin=quote#inquiry'
 
@@ -439,7 +439,7 @@ const SOLUTIONS: { icon: ProductCategory['icon']; copy: PerLocale }[] = [
   },
 ]
 
-const LOCALES: Locale[] = ['en', 'id', 'zh']
+export const LOCALES: Locale[] = ['en', 'id', 'zh']
 const SYSTEM_KEYS = new Set(['id', 'createdAt', 'updatedAt', 'globalType', '_status'])
 
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
@@ -493,10 +493,10 @@ const fillRowsFromEnglish = (mine: unknown, en: unknown, locale: Exclude<Locale,
 const withoutSystemKeys = (doc: Record<string, unknown>) =>
   Object.fromEntries(Object.entries(doc).filter(([key]) => !SYSTEM_KEYS.has(key)))
 
-type Req = Partial<PayloadRequest> | undefined
+export type Req = Partial<PayloadRequest> | undefined
 
 /** English first, so new array rows exist before their Indonesian and Chinese text is added. */
-const writeGlobal = async (payload: Payload, req: Req, slug: GlobalSlug, copy: PerLocale, extra?: Copy) => {
+export const writeGlobal = async (payload: Payload, req: Req, slug: GlobalSlug, copy: PerLocale, extra?: Copy) => {
   for (const locale of LOCALES) {
     const read = async (l: Locale) =>
       withoutSystemKeys((await payload.findGlobal({ slug, locale: l, fallbackLocale: false, depth: 0, req })) as unknown as Record<string, unknown>)

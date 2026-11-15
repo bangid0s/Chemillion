@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import config from '../src/payload.config'
 import { ADDRESS, MAP_EMBED_URL } from '../src/migrations/20261104_090000_company_address'
 import { applyWebsiteCopy } from '../src/content/websiteCopy'
+import { applyCompanyPhotos } from '../src/content/companyPhotos'
 import { richText } from '../src/lib/lexical'
 
 const LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
@@ -242,6 +243,8 @@ const seed = async () => {
 
   // The approved website copy in English, Indonesian and Chinese replaces the placeholders above.
   await applyWebsiteCopy(payload)
+  // Real warehouse and office photos replace the placeholder crops.
+  await applyCompanyPhotos(payload)
 
   payload.logger.info('Seed complete.')
 }
