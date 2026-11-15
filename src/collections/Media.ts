@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isStaff } from '../access'
+import { compressUpload } from '../hooks/compressUpload'
 import { revalidateAfterDelete, revalidateCollection } from '../hooks/revalidate'
 
 export const Media: CollectionConfig = {
@@ -9,7 +10,7 @@ export const Media: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'filename',
     defaultColumns: ['filename', 'alt', 'mimeType', 'updatedAt'],
-    description: 'Max 10 MB. Page images are converted to AVIF/WebP in several widths automatically.',
+    description: 'Max 10 MB. Photos are stored as JPEGs of at most 125 KB, and pages get AVIF/WebP copies sized for each screen.',
     listSearchableFields: ['filename', 'alt'],
   },
   access: {
@@ -19,6 +20,7 @@ export const Media: CollectionConfig = {
     delete: isStaff,
   },
   hooks: {
+    beforeOperation: [compressUpload],
     afterChange: [revalidateCollection],
     afterDelete: [revalidateAfterDelete],
   },
