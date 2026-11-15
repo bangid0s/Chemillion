@@ -2077,6 +2077,13 @@ button.map {
     opacity: 0;
   }
 }
+/* The hero is what a visitor sees first, so it is visible from the first frame and only glides into place: fading it
+   in from invisible would hold back the moment browsers (and Google) count the page as loaded. */
+@keyframes settle {
+  from {
+    translate: 0 calc(12 * var(--u));
+  }
+}
 @keyframes header-shadow {
   to {
     box-shadow: 0 1px 0 rgba(20, 30, 40, 0.06), 0 calc(6 * var(--u)) calc(20 * var(--u)) rgba(10, 40, 60, 0.07);
@@ -2085,7 +2092,7 @@ button.map {
 
 @media (prefers-reduced-motion: no-preference) {
   .hero__copy > * {
-    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation: settle 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
   .hero__copy > :nth-child(2) {
     animation-delay: 0.08s;
@@ -2095,9 +2102,6 @@ button.map {
   }
   .hero__copy > :nth-child(4) {
     animation-delay: 0.24s;
-  }
-  .hero__visual {
-    animation: fade 0.9s ease-out both;
   }
   .hero__badge {
     animation: rise 0.7s 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
