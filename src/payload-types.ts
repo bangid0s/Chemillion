@@ -298,7 +298,7 @@ export interface ProductCategory {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Max 10 MB. Page images are converted to AVIF/WebP in several widths automatically.
+ * Max 10 MB. Photos are stored as JPEGs of at most 125 KB, and pages get AVIF/WebP copies sized for each screen.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
