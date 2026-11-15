@@ -37,6 +37,8 @@ type CmsImageProps = {
   sizes: string
   className?: string
   priority?: boolean
+  /** Visible on first load (but not the hero): fetched right away instead of waiting until it scrolls near. */
+  eager?: boolean
   fill?: boolean
   width?: number
   height?: number
@@ -48,7 +50,7 @@ type CmsImageProps = {
  * `priority` is for the one image a visitor sees first (the hero): it is preloaded from the <head> and fetched ahead of
  * fonts and scripts, which is what makes the page look loaded sooner. Every other image loads lazily as it scrolls in.
  */
-export const CmsImage = ({ media, sizes, className, priority, fill = true, width, height, quality }: CmsImageProps) => {
+export const CmsImage = ({ media, sizes, className, priority, eager, fill = true, width, height, quality }: CmsImageProps) => {
   const file = asMedia(media) as Media | null
   if (!file?.url) return null
   const position =
@@ -63,6 +65,7 @@ export const CmsImage = ({ media, sizes, className, priority, fill = true, width
       className={className}
       preload={priority}
       fetchPriority={priority ? 'high' : undefined}
+      loading={eager && !priority ? 'eager' : undefined}
       quality={quality}
       unoptimized={isSvg}
       style={position ? { objectPosition: position } : undefined}
