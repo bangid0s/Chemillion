@@ -166,29 +166,63 @@ const SOLUTION_PHOTOS: Key[] = ['coveredStorage', 'warehouseForklift', 'indoorSt
 
 const DIR = path.resolve(process.cwd(), 'src', 'content', 'photos')
 
-/** Uploads each photo once; a photo already in the Media Library (same file name) is reused. */
-const upload = async (payload: Payload, req: Req): Promise<Ids> => {
+/** Cloud storage adds a random suffix, so `office.webp` is stored as `office-AbC123.webp` (sometimes several suffixes). */
+const isStoredAs = (stored: string | null | undefined, file: string) => {
+  if (!stored) return false
+  const stem = file.replace(/\.webp$/, '')
+  return stored === file || (stored.startsWith(`${stem}-`) && stored.endsWith('.webp') && /^[-A-Za-z0-9]+$/.test(stored.slice(stem.length + 1, -5)))
+}
+
+const findPhotoDocs = async (payload: Payload, file: string) => {
+  const { docs } = await payload.find({ collection: 'media', where: { filename: { like: file.replace(/\.webp$/, '') } }, limit: 50, depth: 0, pagination: false })
+  return docs.filter((doc) => isStoredAs(doc.filename, file))
+}
+
+/*
+ * Media uploads deliberately get no `req`. The cloud storage plugin keeps the uploaded file on the request's context
+ * and only sets it once, so uploads that share a request (as a migration's do) all store the first file.
+ */
+
+/** Uploads each photo once; a photo already in the Media Library is reused. */
+const upload = async (payload: Payload): Promise<Ids> => {
   const ids = {} as Ids
+  let created = 0
   for (const [key, photo] of Object.entries(PHOTOS) as [Key, Photo][]) {
-    const found = await payload.find({ collection: 'media', where: { filename: { equals: photo.file } }, limit: 1, depth: 0, req })
-    let id = found.docs[0]?.id
+    let id = (await findPhotoDocs(payload, photo.file))[0]?.id
     if (!id) {
       const doc = await payload.create({
         collection: 'media',
         locale: 'en',
-        req,
         data: { alt: photo.alt.en, focalX: photo.focalX ?? 50, focalY: photo.focalY ?? 50 },
         filePath: path.join(DIR, photo.file),
         context: { disableRevalidate: true },
       })
       id = doc.id
+      created++
     }
     for (const locale of LOCALES.filter((l) => l !== 'en')) {
-      await payload.update({ collection: 'media', id, locale, req, data: { alt: photo.alt[locale] }, context: { disableRevalidate: true } })
+      await payload.update({ collection: 'media', id, locale, data: { alt: photo.alt[locale] }, context: { disableRevalidate: true } })
     }
     ids[key] = id
   }
+  const total = Object.keys(PHOTOS).length
+  payload.logger.info(`Company photos: ${created} uploaded, ${total - created} already in the Media Library, ${total} in total.`)
   return ids
+}
+
+/**
+ * Puts the right file back into every company photo in the Media Library. The first upload on Vercel stored the
+ * building photo in all 16 records; the records, alt text and page placements were right, only the files were not.
+ */
+export const reuploadCompanyPhotos = async (payload: Payload) => {
+  let fixed = 0
+  for (const photo of Object.values(PHOTOS) as Photo[]) {
+    for (const doc of await findPhotoDocs(payload, photo.file)) {
+      await payload.update({ collection: 'media', id: doc.id, locale: 'en', data: { alt: photo.alt.en }, filePath: path.join(DIR, photo.file), context: { disableRevalidate: true } })
+      fixed++
+    }
+  }
+  payload.logger.info(`Company photos: uploaded the correct file again for ${fixed} photos.`)
 }
 
 const same = <T,>(value: T): Record<Locale, T> => ({ en: value, id: value, zh: value })
@@ -201,7 +235,7 @@ export const applyCompanyPhotos = async (payload: Payload, req?: Req) => {
     return
   }
 
-  const ids = await upload(payload, req)
+  const ids = await upload(payload)
 
   await writeGlobal(payload, req, 'home-page', same({}), {
     hero: { image: ids.warehouse },
@@ -235,5 +269,5 @@ export const applyCompanyPhotos = async (payload: Payload, req?: Req) => {
     })
   }
 
-  payload.logger.info('Company photos: uploaded 16 photos and placed them on Home, About, Solutions, Contact and the solution cards.')
+  payload.logger.info('Company photos: placed on Home, About, Solutions, Contact and the solution cards.')
 }
