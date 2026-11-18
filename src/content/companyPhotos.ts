@@ -92,11 +92,11 @@ const PHOTOS = {
   forklift: {
     file: 'forklift-moving-chemical-drum.jpg',
     alt: {
-      en: 'Forklift carrying a chemical drum across the Chemillion warehouse floor',
-      id: 'Forklift mengangkut drum bahan kimia di lantai gudang Chemillion',
-      zh: '叉车在 Chemillion 仓库内搬运化学品桶',
+      en: 'Forklift on the Chemillion warehouse floor, with chemical drums stored on pallets along the wall',
+      id: 'Forklift di lantai gudang Chemillion, dengan drum bahan kimia tersimpan di atas palet di sepanjang dinding',
+      zh: 'Chemillion 仓库内的叉车，墙边托盘上存放着化学品桶',
     },
-    focalX: 45,
+    focalX: 62,
   },
   stackedDrums: {
     file: 'stacked-solvent-drums-on-pallets.jpg',
@@ -220,14 +220,25 @@ const upload = async (payload: Payload): Promise<Ids> => {
 }
 
 /**
- * Puts the right file back into every company photo in the Media Library. The first upload on Vercel stored the
- * building photo in all 16 records; the records, alt text and page placements were right, only the files were not.
+ * Puts the right file back into company photos in the Media Library, and their alt text in every language and focal
+ * point. Without `keys` it does all of them. The first upload on Vercel stored the building photo in all 16 records;
+ * the records, alt text and page placements were right, only the files were not.
  */
-export const reuploadCompanyPhotos = async (payload: Payload) => {
+export const reuploadCompanyPhotos = async (payload: Payload, keys?: Key[]) => {
   let fixed = 0
-  for (const photo of Object.values(PHOTOS) as Photo[]) {
+  for (const photo of (keys ?? (Object.keys(PHOTOS) as Key[])).map((key) => PHOTOS[key] as Photo)) {
     for (const doc of await findPhotoDocs(payload, photo.file)) {
-      await payload.update({ collection: 'media', id: doc.id, locale: 'en', data: { alt: photo.alt.en }, filePath: path.join(DIR, photo.file), context: { disableRevalidate: true } })
+      await payload.update({
+        collection: 'media',
+        id: doc.id,
+        locale: 'en',
+        data: { alt: photo.alt.en, focalX: photo.focalX ?? 50, focalY: photo.focalY ?? 50 },
+        filePath: path.join(DIR, photo.file),
+        context: { disableRevalidate: true },
+      })
+      for (const locale of LOCALES.filter((l) => l !== 'en')) {
+        await payload.update({ collection: 'media', id: doc.id, locale, data: { alt: photo.alt[locale] }, context: { disableRevalidate: true } })
+      }
       fixed++
     }
   }

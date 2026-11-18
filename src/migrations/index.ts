@@ -8,6 +8,7 @@ import * as migration_20261106_033000_website_copy from './20261106_033000_websi
 import * as migration_20261115_090000_company_photos from './20261115_090000_company_photos';
 import * as migration_20261115_150000_fix_company_photo_files from './20261115_150000_fix_company_photo_files';
 import * as migration_20261115_170000_compress_company_photos from './20261115_170000_compress_company_photos';
+import * as migration_20261118_090000_updated_company_photos from './20261118_090000_updated_company_photos';
 
 export const migrations = [
   {
@@ -59,5 +60,10 @@ export const migrations = [
     up: migration_20261115_170000_compress_company_photos.up,
     down: migration_20261115_170000_compress_company_photos.down,
     name: '20261115_170000_compress_company_photos'
+  },
+  {
+    up: migration_20261118_090000_updated_company_photos.up,
+    down: migration_20261118_090000_updated_company_photos.down,
+    name: '20261118_090000_updated_company_photos'
   },
 ];
